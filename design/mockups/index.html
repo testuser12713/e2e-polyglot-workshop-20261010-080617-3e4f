@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Werkstattportal — Start</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-name">Werkstattportal</span>
+      <span class="brand-section">Start</span>
+    </a>
+    <div class="topbar-spacer"></div>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Menü">Menü</button>
+    <nav class="nav-links" id="main-nav" aria-label="Hauptnavigation">
+      <a class="nav-link active" href="index.html">Start</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container" data-od-id="main-hub">
+  <div class="page-header" data-od-id="page-header">
+    <h1>Willkommen im Werkstattportal</h1>
+    <p class="page-subtitle">Wählen Sie Ihren Bereich. Kunden buchen Termine und verfolgen Aufträge — die Werkstatt verwaltet Aufträge und Rechnungen.</p>
+  </div>
+
+  <div class="hub-grid">
+    <section class="card hub-card" data-od-id="hub-kundenbereich" aria-labelledby="hub-kunde-title">
+      <h2 id="hub-kunde-title">Kundenbereich</h2>
+      <p>Werkstattauftrag anfragen, Status mit Auftragsnummer und Kennzeichen abrufen, fertige Rechnung einsehen.</p>
+      <a class="btn btn-primary btn-full-mobile" href="kunde.html">Zum Kundenbereich</a>
+      <ul class="hub-links">
+        <li><a href="kunde.html#auftrag-anfragen">Auftrag anfragen</a></li>
+        <li><a href="kunde.html#status-abrufen">Status abrufen</a></li>
+        <li><a href="kunde.html#rechnung">Rechnung ansehen</a></li>
+      </ul>
+    </section>
+
+    <section class="card hub-card" data-od-id="hub-werkstattbereich" aria-labelledby="hub-werkstatt-title">
+      <h2 id="hub-werkstatt-title">Werkstattbereich</h2>
+      <p>Anmelden, offene Aufträge einsehen, Positionen erfassen, Status setzen und den Werkstatt-Dashboard nutzen.</p>
+      <a class="btn btn-secondary btn-full-mobile" href="werkstatt-login.html">Zur Anmeldung</a>
+      <ul class="hub-links">
+        <li><a href="werkstatt-login.html">Anmeldung Mitarbeiter</a></li>
+        <li><a href="werkstatt-dashboard.html">Dashboard</a></li>
+        <li><a href="werkstatt-auftraege.html">Auftragsliste</a></li>
+      </ul>
+    </section>
+  </div>
+</main>
+
+<footer class="legal-footer" data-od-id="legal-footer">
+  <div class="legal-footer-inner">
+    <div class="legal-footer-links">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutzerklärung</a>
+    </div>
+    <div>Alle Angaben ohne Gewähr. Werkstattportal, Beispielwerkstatt</div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var btn = document.querySelector('.menu-btn');
+  var nav = document.getElementById('main-nav');
+  btn.addEventListener('click', function () {
+    var open = nav.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+})();
+</script>
+</body>
+</html>

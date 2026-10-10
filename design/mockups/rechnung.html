@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rechnung — Kundenbereich — Werkstattportal</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-name">Werkstattportal</span>
+      <span class="brand-section">Kundenbereich</span>
+    </a>
+    <div class="topbar-spacer"></div>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Menü">Menü</button>
+    <nav class="nav-links" id="main-nav" aria-label="Hauptnavigation">
+      <a class="nav-link" href="kunde.html">Auftrag anfragen</a>
+      <a class="nav-link" href="kunde.html#status-abrufen">Status abrufen</a>
+      <a class="nav-link active" href="rechnung.html">Rechnung</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container-narrow" data-od-id="rechnung-main">
+  <div class="page-header">
+    <h1>Rechnung</h1>
+    <p class="page-subtitle">Auftrag <span class="mono">AU-2025-00118</span> · Kennzeichen <span class="mono">B-XY 7788</span> · Status <span class="badge badge-done" style="vertical-align:middle;"><span class="badge-dot" aria-hidden="true"></span>fertig</span></p>
+  </div>
+
+  <section class="card" data-od-id="invoice-card" aria-labelledby="invoice-title">
+    <div class="card-header">
+      <h2 class="card-title-sm" id="invoice-title">Rechnungspositionen</h2>
+      <span class="mono" style="font-size:13px;color:var(--color-fg-muted);">Rechnung R-2025-00087</span>
+    </div>
+
+    <table class="invoice-lines" data-od-id="invoice-lines">
+      <thead>
+        <tr>
+          <th scope="col">Beschreibung</th>
+          <th scope="col" class="right">Menge</th>
+          <th scope="col" class="right">Einzelpreis</th>
+          <th scope="col" class="right">Betrag</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Arbeitszeit — Diagnose und Reparatur</td>
+          <td class="right num">2 h 30 min</td>
+          <td class="right num">95,00 €</td>
+          <td class="right num">237,50 €</td>
+        </tr>
+        <tr>
+          <td>Arbeitszeit — Bremsbeläge vorne</td>
+          <td class="right num">1 h 15 min</td>
+          <td class="right num">95,00 €</td>
+          <td class="right num">118,75 €</td>
+        </tr>
+        <tr>
+          <td>Einzelteil — Bremsbelagsatz vorne</td>
+          <td class="right num">1</td>
+          <td class="right num">84,20 €</td>
+          <td class="right num">84,20 €</td>
+        </tr>
+        <tr>
+          <td>Einzelteil — Bremsflüssigkeit DOT 4</td>
+          <td class="right num">1</td>
+          <td class="right num">12,90 €</td>
+          <td class="right num">12,90 €</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="invoice-totals" data-od-id="invoice-totals">
+      <div class="invoice-totals-row">
+        <span>Nettobetrag</span>
+        <span class="num">453,35 €</span>
+      </div>
+      <div class="invoice-totals-row">
+        <span>Mehrwertsteuer (19 %)</span>
+        <span class="num">86,14 €</span>
+      </div>
+      <div class="invoice-totals-row grand">
+        <span>Gesamtbetrag</span>
+        <span class="num">539,49 €</span>
+      </div>
+    </div>
+
+    <p class="invoice-note">Die Rechnung ist hier nur einzusehen. Ein Download und eine Online-Zahlung sind derzeit nicht vorgesehen.</p>
+  </section>
+
+  <section class="section" style="margin-top:32px;" data-od-id="rechnung-timeline-section" aria-labelledby="rechnung-timeline-title">
+    <h3 id="rechnung-timeline-title" style="font-size:17px;margin-bottom:12px;">Statusverlauf des Auftrags</h3>
+    <div class="card">
+      <ol class="timeline" data-od-id="rechnung-timeline">
+        <li>
+          <span class="timeline-node done" aria-hidden="true"></span>
+          <p class="timeline-state">fertig</p>
+          <p class="timeline-meta">27.02.2025, 16:40 Uhr · Werkstatt</p>
+        </li>
+        <li>
+          <span class="timeline-node inprogress" aria-hidden="true"></span>
+          <p class="timeline-state">in Arbeit</p>
+          <p class="timeline-meta">25.02.2025, 08:15 Uhr · Werkstatt</p>
+        </li>
+        <li>
+          <span class="timeline-node confirmed" aria-hidden="true"></span>
+          <p class="timeline-state">bestätigt</p>
+          <p class="timeline-meta">24.02.2025, 15:00 Uhr · Werkstatt</p>
+        </li>
+        <li>
+          <span class="timeline-node requested" aria-hidden="true"></span>
+          <p class="timeline-state">angefragt</p>
+          <p class="timeline-meta">24.02.2025, 14:05 Uhr · Kunde</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <div style="margin-top:24px;display:flex;gap:8px;flex-wrap:wrap;">
+    <a class="btn btn-secondary" href="kunde.html#status-abrufen">Zurück zum Statusabruf</a>
+    <a class="btn btn-ghost" href="kunde.html">Weiteren Auftrag anfragen</a>
+  </div>
+</main>
+
+<footer class="legal-footer" data-od-id="legal-footer">
+  <div class="legal-footer-inner">
+    <div class="legal-footer-links">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutzerklärung</a>
+    </div>
+    <div>Alle Angaben ohne Gewähr. Werkstattportal, Beispielwerkstatt</div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var nav = document.getElementById('main-nav');
+  var menuBtn = document.querySelector('.menu-btn');
+  menuBtn.addEventListener('click', function () {
+    var open = nav.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+})();
+</script>
+</body>
+</html>

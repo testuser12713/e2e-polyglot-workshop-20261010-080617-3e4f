@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kundenbereich — Werkstattportal</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-name">Werkstattportal</span>
+      <span class="brand-section">Kundenbereich</span>
+    </a>
+    <div class="topbar-spacer"></div>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Menü">Menü</button>
+    <nav class="nav-links" id="main-nav" aria-label="Hauptnavigation">
+      <a class="nav-link active" href="kunde.html">Auftrag anfragen</a>
+      <a class="nav-link" href="kunde.html#status-abrufen">Status abrufen</a>
+      <a class="nav-link" href="rechnung.html">Rechnung</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container-narrow">
+
+  <!-- ============ Auftrag anfragen ============ -->
+  <section class="section" id="auftrag-anfragen" data-od-id="auftrag-anfragen" aria-labelledby="anfrage-title">
+    <div class="page-header">
+      <h1 id="anfrage-title">Werkstattauftrag anfragen</h1>
+      <p class="page-subtitle">Beschreiben Sie Ihr Anliegen und Ihren Wunschtermin. Wir melden uns zur Bestätigung.</p>
+    </div>
+
+    <div class="card" data-od-id="anfrage-card">
+      <div id="anfrage-error-summary" class="alert alert-error form-error-summary hidden" role="alert" data-od-id="anfrage-error-summary">
+        <span class="alert-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.5v4M8 11h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </span>
+        <span>Bitte prüfen Sie die markierten Felder.</span>
+      </div>
+
+      <form class="form-stack" id="anfrage-form" novalidate data-od-id="anfrage-form">
+        <div class="field">
+          <label class="field-label" for="kfz-kennzeichen">Kennzeichen <span class="field-required">erforderlich</span></label>
+          <input class="field-input plate" id="kfz-kennzeichen" name="kennzeichen" type="text" placeholder="B-AB 1234" autocomplete="off" required aria-describedby="kfz-kennzeichen-helper">
+          <div class="field-helper" id="kfz-kennzeichen-helper">Format B-AB 1234</div>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="kfz-marke">Marke <span class="field-required">erforderlich</span></label>
+          <input class="field-input" id="kfz-marke" name="marke" type="text" placeholder="z. B. Volkswagen" required aria-describedby="kfz-marke-helper">
+          <div class="field-helper" id="kfz-marke-helper"></div>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="kfz-modell">Modell <span class="field-required">erforderlich</span></label>
+          <input class="field-input" id="kfz-modell" name="modell" type="text" placeholder="z. B. Golf" required aria-describedby="kfz-modell-helper">
+          <div class="field-helper" id="kfz-modell-helper"></div>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="kfz-km">Kilometerstand <span class="field-required">erforderlich</span></label>
+          <input class="field-input numeric" id="kfz-km" name="kilometer" type="text" inputmode="numeric" placeholder="128450" required aria-describedby="kfz-km-helper">
+          <div class="field-helper" id="kfz-km-helper">Ganze Zahl in km, z. B. 128.450</div>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="kfz-termin">Wunschtermin <span class="field-required">erforderlich</span></label>
+          <input class="field-input" id="kfz-termin" name="wunschtermin" type="date" required aria-describedby="kfz-termin-helper">
+          <div class="field-helper" id="kfz-termin-helper"></div>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="kfz-problem">Problembeschreibung <span class="field-required">erforderlich</span></label>
+          <textarea class="field-textarea" id="kfz-problem" name="problem" placeholder="Was ist aufgefallen? z. B. Motorleuchte leuchtet, Geräusch beim Bremsen" required aria-describedby="kfz-problem-helper"></textarea>
+          <div class="field-helper" id="kfz-problem-helper"></div>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="k-name">Ihr Name <span class="field-required">erforderlich</span></label>
+          <input class="field-input" id="k-name" name="name" type="text" autocomplete="name" required aria-describedby="k-name-helper">
+          <div class="field-helper" id="k-name-helper"></div>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="k-email">E-Mail <span class="field-required">erforderlich</span></label>
+          <input class="field-input" id="k-email" name="email" type="email" autocomplete="email" placeholder="name@beispiel.de" required aria-describedby="k-email-helper">
+          <div class="field-helper" id="k-email-helper"></div>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="k-tel">Telefon <span class="field-required">erforderlich</span></label>
+          <input class="field-input numeric" id="k-tel" name="telefon" type="tel" inputmode="tel" autocomplete="tel" placeholder="030 1234567" required aria-describedby="k-tel-helper">
+          <div class="field-helper" id="k-tel-helper"></div>
+        </div>
+
+        <div class="form-submit-row">
+          <button class="btn btn-primary btn-full-mobile" type="submit" id="anfrage-submit" data-od-id="anfrage-submit">Auftrag anfragen</button>
+        </div>
+      </form>
+
+      <div id="anfrage-confirmation" class="hidden" data-od-id="anfrage-confirmation">
+        <div class="alert alert-success" role="status">
+          <span class="alert-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.2l2 2 4-4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span>Ihre Anfrage ist eingegangen. Die Auftragsnummer lautet:</span>
+        </div>
+        <p class="mono" style="font-size:24px;font-weight:600;margin:16px 0 8px;" id="confirmation-number">AU-2025-00124</p>
+        <p style="color:var(--color-fg-muted);">Wir bestätigen den Termin per E-Mail. Den Status können Sie jederzeit mit Auftragsnummer und Kennzeichen abrufen.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;">
+          <a class="btn btn-secondary" href="#status-abrufen">Status abrufen</a>
+          <button class="btn btn-ghost" type="button" id="anfrage-reset" data-od-id="anfrage-reset">Weitere Anfrage stellen</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Status abrufen ============ -->
+  <section class="section" id="status-abrufen" data-od-id="status-abrufen" aria-labelledby="status-title">
+    <div class="page-header">
+      <h2 id="status-title" style="font-size:24px;">Status abrufen</h2>
+      <p class="page-subtitle">Geben Sie Auftragsnummer und Kennzeichen ein. Es werden nur Daten angezeigt, wenn beide übereinstimmen.</p>
+    </div>
+
+    <div class="card" data-od-id="status-lookup-card">
+      <form class="form-stack" id="status-form" novalidate data-od-id="status-form">
+        <div class="field">
+          <label class="field-label" for="su-nummer">Auftragsnummer <span class="field-required">erforderlich</span></label>
+          <input class="field-input plate" id="su-nummer" name="nummer" type="text" placeholder="AU-2025-00123" autocomplete="off" required aria-describedby="su-nummer-helper">
+          <div class="field-helper" id="su-nummer-helper">Format AU-JJJJ-NNNNN</div>
+        </div>
+        <div class="field">
+          <label class="field-label" for="su-kennzeichen">Kennzeichen <span class="field-required">erforderlich</span></label>
+          <input class="field-input plate" id="su-kennzeichen" name="kennzeichen" type="text" placeholder="B-AB 1234" autocomplete="off" required aria-describedby="su-kennzeichen-helper">
+          <div class="field-helper" id="su-kennzeichen-helper"></div>
+        </div>
+        <div class="form-submit-row">
+          <button class="btn btn-primary btn-full-mobile" type="submit" data-od-id="status-submit">Status anzeigen</button>
+        </div>
+      </form>
+
+      <div id="status-error" class="alert alert-error hidden" role="alert" style="margin-top:16px;" data-od-id="status-error">
+        <span class="alert-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.5v4M8 11h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </span>
+        <span id="status-error-text">Zu dieser Auftragsnummer wurde kein Auftrag mit dem angegebenen Kennzeichen gefunden. Prüfen Sie beide Eingaben.</span>
+      </div>
+
+      <div id="status-result" class="hidden" style="margin-top:24px;" data-od-id="status-result">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
+          <div>
+            <div class="mono" style="font-size:17px;font-weight:600;" id="result-nummer">AU-2025-00123</div>
+            <div class="mono" style="color:var(--color-fg-muted);" id="result-plate">B-AB 1234</div>
+          </div>
+          <span class="badge badge-inprogress" id="result-badge"><span class="badge-dot" aria-hidden="true"></span>in Arbeit</span>
+        </div>
+
+        <dl class="detail-grid" style="margin:0 0 24px;">
+          <div class="detail-item"><dt>Fahrzeug</dt><dd id="result-vehicle">Volkswagen Golf</dd></div>
+          <div class="detail-item"><dt>Wunschtermin</dt><dd class="num" id="result-termin">12.03.2025</dd></div>
+          <div class="detail-item"><dt>Angefragt am</dt><dd class="num" id="result-angefragt">05.03.2025, 09:14 Uhr</dd></div>
+          <div class="detail-item"><dt>Letzte Änderung</dt><dd class="num" id="result-geaendert">07.03.2025, 08:02 Uhr</dd></div>
+        </dl>
+
+        <h3 style="font-size:17px;margin-bottom:12px;">Statusverlauf</h3>
+        <ol class="timeline" data-od-id="status-timeline">
+          <li>
+            <span class="timeline-node inprogress" aria-hidden="true"></span>
+            <p class="timeline-state">in Arbeit</p>
+            <p class="timeline-meta">07.03.2025, 08:02 Uhr · Werkstatt</p>
+          </li>
+          <li>
+            <span class="timeline-node confirmed" aria-hidden="true"></span>
+            <p class="timeline-state">bestätigt</p>
+            <p class="timeline-meta">05.03.2025, 11:30 Uhr · Werkstatt</p>
+          </li>
+          <li>
+            <span class="timeline-node requested" aria-hidden="true"></span>
+            <p class="timeline-state">angefragt</p>
+            <p class="timeline-meta">05.03.2025, 09:14 Uhr · Kunde</p>
+          </li>
+        </ol>
+
+        <div id="status-invoice-hint" class="hidden" style="margin-top:24px;" data-od-id="status-invoice-hint">
+          <div class="alert alert-info">
+            <span class="alert-icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M8 7.5v4M8 5h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </span>
+            <span>Der Auftrag ist fertiggestellt. <a href="rechnung.html">Rechnung AU-2025-00123 ansehen</a></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="legal-footer" data-od-id="legal-footer">
+  <div class="legal-footer-inner">
+    <div class="legal-footer-links">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutzerklärung</a>
+    </div>
+    <div>Alle Angaben ohne Gewähr. Werkstattportal, Beispielwerkstatt</div>
+  </div>
+</footer>
+
+<div class="toast-region" id="toast-region" aria-live="polite"></div>
+
+<script>
+(function () {
+  var nav = document.getElementById('main-nav');
+  var menuBtn = document.querySelector('.menu-btn');
+  menuBtn.addEventListener('click', function () {
+    var open = nav.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  function showToast(msg, isError) {
+    var region = document.getElementById('toast-region');
+    var t = document.createElement('div');
+    t.className = 'toast' + (isError ? ' error' : '');
+    t.setAttribute('role', isError ? 'alert' : 'status');
+    t.textContent = msg;
+    region.appendChild(t);
+    setTimeout(function () { t.remove(); }, 6000);
+  }
+
+  function setFieldError(input, helper, message) {
+    if (message) {
+      input.classList.add('error');
+      input.setAttribute('aria-invalid', 'true');
+      helper.textContent = message;
+      helper.classList.add('error');
+    } else {
+      input.classList.remove('error');
+      input.removeAttribute('aria-invalid');
+      helper.textContent = helper.getAttribute('data-default') || '';
+      helper.classList.remove('error');
+    }
+  }
+
+  // remember default helper texts
+  document.querySelectorAll('.field-helper').forEach(function (h) {
+    h.setAttribute('data-default', h.textContent);
+  });
+
+  // ---- Anfrage form ----
+  var form = document.getElementById('anfrage-form');
+  var summary = document.getElementById('anfrage-error-summary');
+  var confirmation = document.getElementById('anfrage-confirmation');
+  var submitBtn = document.getElementById('anfrage-submit');
+
+  var validators = {
+    'kfz-kennzeichen': function (v) {
+      if (!v.trim()) return 'Kennzeichen ist erforderlich.';
+      if (!/^[A-ZÄÖÜ]-[A-ZÄÖÜ]{1,3}\s?\d{1,4}[EH]?$/.test(v.trim().toUpperCase())) return 'Bitte im Format B-AB 1234 eingeben.';
+      return '';
+    },
+    'kfz-marke': function (v) { return v.trim() ? '' : 'Marke ist erforderlich.'; },
+    'kfz-modell': function (v) { return v.trim() ? '' : 'Modell ist erforderlich.'; },
+    'kfz-km': function (v) {
+      if (!v.trim()) return 'Kilometerstand ist erforderlich.';
+      if (!/^\d+$/.test(v.replace(/\./g, '').trim())) return 'Bitte eine ganze Zahl eingeben.';
+      return '';
+    },
+    'kfz-termin': function (v) { return v ? '' : 'Wunschtermin ist erforderlich.'; },
+    'kfz-problem': function (v) { return v.trim() ? '' : 'Bitte beschreiben Sie Ihr Anliegen.'; },
+    'k-name': function (v) { return v.trim() ? '' : 'Name ist erforderlich.'; },
+    'k-email': function (v) {
+      if (!v.trim()) return 'E-Mail ist erforderlich.';
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())) return 'Bitte eine gültige E-Mail-Adresse eingeben.';
+      return '';
+    },
+    'k-tel': function (v) { return v.trim() ? '' : 'Telefon ist erforderlich.'; }
+  };
+
+  function validateField(id) {
+    var input = document.getElementById(id);
+    var helper = document.getElementById(id + '-helper');
+    var msg = validators[id](input.value);
+    setFieldError(input, helper, msg);
+    return !msg;
+  }
+
+  Object.keys(validators).forEach(function (id) {
+    var el = document.getElementById(id);
+    el.addEventListener('blur', function () { validateField(id); });
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var ok = true;
+    var firstBad = null;
+    Object.keys(validators).forEach(function (id) {
+      if (!validateField(id)) {
+        ok = false;
+        if (!firstBad) firstBad = document.getElementById(id);
+      }
+    });
+    if (!ok) {
+      summary.classList.remove('hidden');
+      if (firstBad) firstBad.focus();
+      return;
+    }
+    summary.classList.add('hidden');
+    submitBtn.disabled = true;
+    submitBtn.setAttribute('aria-busy', 'true');
+    submitBtn.innerHTML = '<span class="spinner" aria-hidden="true"></span><span class="visually-hidden">Wird gesendet…</span>';
+    setTimeout(function () {
+      form.classList.add('hidden');
+      confirmation.classList.remove('hidden');
+      submitBtn.disabled = false;
+      submitBtn.removeAttribute('aria-busy');
+      submitBtn.textContent = 'Auftrag anfragen';
+      showToast('Auftrag angefragt. Auftragsnummer AU-2025-00124.');
+      confirmation.scrollIntoView({ block: 'nearest' });
+    }, 700);
+  });
+
+  document.getElementById('anfrage-reset').addEventListener('click', function () {
+    form.reset();
+    document.querySelectorAll('#anfrage-form .field-input, #anfrage-form .field-textarea').forEach(function (i) {
+      i.classList.remove('error');
+      i.removeAttribute('aria-invalid');
+    });
+    document.querySelectorAll('#anfrage-form .field-helper').forEach(function (h) {
+      h.textContent = h.getAttribute('data-default') || '';
+      h.classList.remove('error');
+    });
+    confirmation.classList.add('hidden');
+    form.classList.remove('hidden');
+    document.getElementById('kfz-kennzeichen').focus();
+  });
+
+  // ---- Status lookup ----
+  var statusForm = document.getElementById('status-form');
+  var statusError = document.getElementById('status-error');
+  var statusResult = document.getElementById('status-result');
+  var invoiceHint = document.getElementById('status-invoice-hint');
+
+  var knownOrders = {
+    'AU-2025-00123|B-AB 1234': {
+      badgeClass: 'badge-inprogress', badgeText: 'in Arbeit',
+      vehicle: 'Volkswagen Golf', termin: '12.03.2025',
+      angefragt: '05.03.2025, 09:14 Uhr', geaendert: '07.03.2025, 08:02 Uhr',
+      invoice: false,
+      timeline: [
+        { state: 'in Arbeit', cls: 'inprogress', meta: '07.03.2025, 08:02 Uhr · Werkstatt' },
+        { state: 'bestätigt', cls: 'confirmed', meta: '05.03.2025, 11:30 Uhr · Werkstatt' },
+        { state: 'angefragt', cls: 'requested', meta: '05.03.2025, 09:14 Uhr · Kunde' }
+      ]
+    },
+    'AU-2025-00118|B-XY 7788': {
+      badgeClass: 'badge-done', badgeText: 'fertig',
+      vehicle: 'Škoda Octavia', termin: '28.02.2025',
+      angefragt: '24.02.2025, 14:05 Uhr', geaendert: '27.02.2025, 16:40 Uhr',
+      invoice: true,
+      timeline: [
+        { state: 'fertig', cls: 'done', meta: '27.02.2025, 16:40 Uhr · Werkstatt' },
+        { state: 'in Arbeit', cls: 'inprogress', meta: '25.02.2025, 08:15 Uhr · Werkstatt' },
+        { state: 'bestätigt', cls: 'confirmed', meta: '24.02.2025, 15:00 Uhr · Werkstatt' },
+        { state: 'angefragt', cls: 'requested', meta: '24.02.2025, 14:05 Uhr · Kunde' }
+      ]
+    }
+  };
+
+  statusForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var nummer = document.getElementById('su-nummer').value.trim().toUpperCase();
+    var plate = document.getElementById('su-kennzeichen').value.trim().toUpperCase().replace(/\s+/g, ' ');
+    var key = nummer + '|' + plate;
+    var order = knownOrders[key];
+
+    if (!order) {
+      statusResult.classList.add('hidden');
+      statusError.classList.remove('hidden');
+      return;
+    }
+    statusError.classList.add('hidden');
+    statusResult.classList.remove('hidden');
+
+    document.getElementById('result-nummer').textContent = nummer;
+    document.getElementById('result-plate').textContent = plate;
+    var badge = document.getElementById('result-badge');
+    badge.className = 'badge ' + order.badgeClass;
+    badge.innerHTML = '<span class="badge-dot" aria-hidden="true"></span>' + order.badgeText;
+    document.getElementById('result-vehicle').textContent = order.vehicle;
+    document.getElementById('result-termin').textContent = order.termin;
+    document.getElementById('result-angefragt').textContent = order.angefragt;
+    document.getElementById('result-geaendert').textContent = order.geaendert;
+
+    var ol = document.querySelector('#status-result .timeline');
+    ol.innerHTML = order.timeline.map(function (ev) {
+      return '<li><span class="timeline-node ' + ev.cls + '" aria-hidden="true"></span>' +
+        '<p class="timeline-state">' + ev.state + '</p>' +
+        '<p class="timeline-meta">' + ev.meta + '</p></li>';
+    }).join('');
+
+    invoiceHint.classList.toggle('hidden', !order.invoice);
+  });
+})();
+</script>
+</body>
+</html>

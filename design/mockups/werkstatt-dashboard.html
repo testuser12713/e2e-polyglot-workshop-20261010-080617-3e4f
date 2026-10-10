@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard — Werkstattbereich — Werkstattportal</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-name">Werkstattportal</span>
+      <span class="brand-section">Werkstattbereich</span>
+    </a>
+    <div class="topbar-spacer"></div>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Menü">Menü</button>
+    <nav class="nav-links" id="main-nav" aria-label="Hauptnavigation">
+      <a class="nav-link active" href="werkstatt-dashboard.html">Dashboard</a>
+      <a class="nav-link" href="werkstatt-auftraege.html">Aufträge</a>
+      <span class="nav-user">M. Schmidt</span>
+      <a class="nav-link" href="werkstatt-login.html">Abmelden</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container" data-od-id="dashboard-main">
+  <div class="page-header">
+    <h1>Dashboard</h1>
+    <p class="page-subtitle">Stand 10.03.2025, 14:30 Uhr</p>
+  </div>
+
+  <section class="section" data-od-id="stat-tiles" aria-label="Kennzahlen">
+    <div class="stat-grid">
+      <div class="stat-tile" data-od-id="stat-open">
+        <p class="stat-label">Offene Aufträge</p>
+        <p class="stat-value">12</p>
+        <p class="stat-delta">davon 3 in Arbeit</p>
+      </div>
+      <div class="stat-tile" data-od-id="stat-done-today">
+        <p class="stat-label">Heute fertig geworden</p>
+        <p class="stat-value">3</p>
+        <p class="stat-delta up">+1 gegenüber gestern</p>
+      </div>
+      <div class="stat-tile span-full" data-od-id="stat-revenue">
+        <p class="stat-label">Umsatz laufender Monat</p>
+        <p class="stat-value">18.742,00 €</p>
+        <p class="stat-delta">März 2025, 24 Rechnungen</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-od-id="dashboard-recent" aria-labelledby="recent-title">
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title-sm" id="recent-title">Zuletzt fertiggestellte Aufträge</h2>
+        <a class="btn btn-ghost btn-sm" href="werkstatt-auftraege.html">Alle Aufträge</a>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table" data-od-id="recent-table">
+          <thead>
+            <tr>
+              <th scope="col">Auftragsnummer</th>
+              <th scope="col">Kennzeichen</th>
+              <th scope="col">Fahrzeug</th>
+              <th scope="col">Status</th>
+              <th scope="col" class="col-date">Fertig am</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-order"><a href="werkstatt-auftrag.html">AU-2025-00118</a></td>
+              <td class="col-plate">B-XY 7788</td>
+              <td>Škoda Octavia</td>
+              <td><span class="badge badge-done"><span class="badge-dot" aria-hidden="true"></span>fertig</span></td>
+              <td class="col-date">27.02.2025</td>
+            </tr>
+            <tr>
+              <td class="col-order"><a href="werkstatt-auftrag.html">AU-2025-00117</a></td>
+              <td class="col-plate">M-CD 4512</td>
+              <td>BMW 320d</td>
+              <td><span class="badge badge-pickedup"><span class="badge-dot" aria-hidden="true"></span>abgeholt</span></td>
+              <td class="col-date">26.02.2025</td>
+            </tr>
+            <tr>
+              <td class="col-order"><a href="werkstatt-auftrag.html">AU-2025-00115</a></td>
+              <td class="col-plate">B-AB 1234</td>
+              <td>Volkswagen Golf</td>
+              <td><span class="badge badge-pickedup"><span class="badge-dot" aria-hidden="true"></span>abgeholt</span></td>
+              <td class="col-date">24.02.2025</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="stack-list">
+        <div class="stack-card">
+          <div class="stack-card-head">
+            <span class="stack-card-order">AU-2025-00118</span>
+            <span class="badge badge-done"><span class="badge-dot" aria-hidden="true"></span>fertig</span>
+          </div>
+          <dl class="stack-pairs">
+            <div class="stack-pair"><dt>Kennzeichen</dt><dd class="mono">B-XY 7788</dd></div>
+            <div class="stack-pair"><dt>Fahrzeug</dt><dd>Škoda Octavia</dd></div>
+            <div class="stack-pair"><dt>Fertig am</dt><dd class="num">27.02.2025</dd></div>
+          </dl>
+          <div class="stack-card-actions"><a class="btn btn-secondary btn-sm" href="werkstatt-auftrag.html">Auftrag öffnen</a></div>
+        </div>
+        <div class="stack-card">
+          <div class="stack-card-head">
+            <span class="stack-card-order">AU-2025-00117</span>
+            <span class="badge badge-pickedup"><span class="badge-dot" aria-hidden="true"></span>abgeholt</span>
+          </div>
+          <dl class="stack-pairs">
+            <div class="stack-pair"><dt>Kennzeichen</dt><dd class="mono">M-CD 4512</dd></div>
+            <div class="stack-pair"><dt>Fahrzeug</dt><dd>BMW 320d</dd></div>
+            <div class="stack-pair"><dt>Fertig am</dt><dd class="num">26.02.2025</dd></div>
+          </dl>
+          <div class="stack-card-actions"><a class="btn btn-secondary btn-sm" href="werkstatt-auftrag.html">Auftrag öffnen</a></div>
+        </div>
+        <div class="stack-card">
+          <div class="stack-card-head">
+            <span class="stack-card-order">AU-2025-00115</span>
+            <span class="badge badge-pickedup"><span class="badge-dot" aria-hidden="true"></span>abgeholt</span>
+          </div>
+          <dl class="stack-pairs">
+            <div class="stack-pair"><dt>Kennzeichen</dt><dd class="mono">B-AB 1234</dd></div>
+            <div class="stack-pair"><dt>Fahrzeug</dt><dd>Volkswagen Golf</dd></div>
+            <div class="stack-pair"><dt>Fertig am</dt><dd class="num">24.02.2025</dd></div>
+          </dl>
+          <div class="stack-card-actions"><a class="btn btn-secondary btn-sm" href="werkstatt-auftrag.html">Auftrag öffnen</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-od-id="dashboard-actions" aria-labelledby="actions-title">
+    <h2 id="actions-title" style="font-size:17px;margin-bottom:12px;">Schnellaktionen</h2>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <a class="btn btn-primary" href="werkstatt-auftraege.html">Auftragsliste öffnen</a>
+      <button class="btn btn-secondary" type="button" disabled aria-disabled="true" title="kommt bald">Neuer Auftrag <span style="font-size:12px;font-weight:400;margin-left:6px;">kommt bald</span></button>
+    </div>
+  </section>
+</main>
+
+<footer class="legal-footer" data-od-id="legal-footer">
+  <div class="legal-footer-inner">
+    <div class="legal-footer-links">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutzerklärung</a>
+    </div>
+    <div>Alle Angaben ohne Gewähr. Werkstattportal, Beispielwerkstatt</div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var nav = document.getElementById('main-nav');
+  var menuBtn = document.querySelector('.menu-btn');
+  menuBtn.addEventListener('click', function () {
+    var open = nav.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+})();
+</script>
+</body>
+</html>

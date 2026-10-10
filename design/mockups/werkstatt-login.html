@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anmeldung — Werkstattbereich — Werkstattportal</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-name">Werkstattportal</span>
+      <span class="brand-section">Werkstattbereich</span>
+    </a>
+    <div class="topbar-spacer"></div>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Menü">Menü</button>
+    <nav class="nav-links" id="main-nav" aria-label="Hauptnavigation">
+      <a class="nav-link active" href="werkstatt-login.html">Anmeldung</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container-narrow" data-od-id="login-main">
+  <div class="page-header">
+    <h1>Anmeldung Werkstattbereich</h1>
+    <p class="page-subtitle">Melden Sie sich mit Ihrem Mitarbeiter-Konto an. Kundenkonten gelten hier nicht.</p>
+  </div>
+
+  <div class="card elevated" data-od-id="login-card">
+    <div id="login-alert" class="alert alert-error hidden" role="alert" style="margin-bottom:16px;" data-od-id="login-alert">
+      <span class="alert-icon" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.5v4M8 11h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </span>
+      <span id="login-alert-text">Die Anmeldung ist fehlgeschlagen. Bitte prüfen Sie Benutzername und Passwort.</span>
+    </div>
+
+    <form class="form-stack" id="login-form" novalidate data-od-id="login-form">
+      <div class="field">
+        <label class="field-label" for="login-user">Benutzername <span class="field-required">erforderlich</span></label>
+        <input class="field-input" id="login-user" name="user" type="text" autocomplete="username" required aria-describedby="login-user-helper">
+        <div class="field-helper" id="login-user-helper"></div>
+      </div>
+      <div class="field">
+        <label class="field-label" for="login-pass">Passwort <span class="field-required">erforderlich</span></label>
+        <input class="field-input" id="login-pass" name="pass" type="password" autocomplete="current-password" required aria-describedby="login-pass-helper">
+        <div class="field-helper" id="login-pass-helper"></div>
+      </div>
+      <div class="form-submit-row">
+        <button class="btn btn-primary btn-full-mobile" type="submit" id="login-submit" data-od-id="login-submit">Anmelden</button>
+      </div>
+    </form>
+
+    <div id="login-success" class="hidden" data-od-id="login-success">
+      <div class="alert alert-success" role="status">
+        <span class="alert-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.2l2 2 4-4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span>Anmeldung erfolgreich. Sie werden weitergeleitet…</span>
+      </div>
+      <div style="margin-top:16px;">
+        <a class="btn btn-primary" href="werkstatt-dashboard.html">Zum Dashboard</a>
+      </div>
+    </div>
+  </div>
+
+  <p style="margin-top:24px;font-size:13px;color:var(--color-fg-muted);">
+    Zugangsdaten erhalten Sie von der Werkstattleitung. Nach mehreren Fehlversuchen wird die Anmeldung zeitweise gesperrt.
+  </p>
+</main>
+
+<footer class="legal-footer" data-od-id="legal-footer">
+  <div class="legal-footer-inner">
+    <div class="legal-footer-links">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutzerklärung</a>
+    </div>
+    <div>Alle Angaben ohne Gewähr. Werkstattportal, Beispielwerkstatt</div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var nav = document.getElementById('main-nav');
+  var menuBtn = document.querySelector('.menu-btn');
+  menuBtn.addEventListener('click', function () {
+    var open = nav.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  var form = document.getElementById('login-form');
+  var alertBox = document.getElementById('login-alert');
+  var alertText = document.getElementById('login-alert-text');
+  var success = document.getElementById('login-success');
+  var submit = document.getElementById('login-submit');
+  var attempts = 0;
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var user = document.getElementById('login-user').value.trim();
+    var pass = document.getElementById('login-pass').value;
+    alertBox.classList.add('hidden');
+
+    if (!user || !pass) {
+      alertText.textContent = 'Bitte Benutzername und Passwort eingeben.';
+      alertBox.classList.remove('hidden');
+      return;
+    }
+
+    submit.disabled = true;
+    submit.setAttribute('aria-busy', 'true');
+    submit.innerHTML = '<span class="spinner" aria-hidden="true"></span>';
+
+    setTimeout(function () {
+      submit.disabled = false;
+      submit.removeAttribute('aria-busy');
+      submit.textContent = 'Anmelden';
+
+      // demo: any non-empty credentials succeed; showcase 429 after 5 "failed" attempts with wrong demo pair
+      if (user === 'm.schmidt' && pass === 'werkstatt2024') {
+        form.classList.add('hidden');
+        success.classList.remove('hidden');
+      } else {
+        attempts++;
+        if (attempts >= 5) {
+          alertText.textContent = 'Zu viele Fehlversuche. Die Anmeldung ist für kurze Zeit gesperrt (Fehlercode auth_rate_limited).';
+        } else {
+          alertText.textContent = 'Die Anmeldung ist fehlgeschlagen. Bitte prüfen Sie Benutzername und Passwort.';
+        }
+        alertBox.classList.remove('hidden');
+        document.getElementById('login-pass').value = '';
+        document.getElementById('login-pass').focus();
+      }
+    }, 600);
+  });
+})();
+</script>
+</body>
+</html>

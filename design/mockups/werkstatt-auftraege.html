@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aufträge — Werkstattbereich — Werkstattportal</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-name">Werkstattportal</span>
+      <span class="brand-section">Werkstattbereich</span>
+    </a>
+    <div class="topbar-spacer"></div>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Menü">Menü</button>
+    <nav class="nav-links" id="main-nav" aria-label="Hauptnavigation">
+      <a class="nav-link" href="werkstatt-dashboard.html">Dashboard</a>
+      <a class="nav-link active" href="werkstatt-auftraege.html">Aufträge</a>
+      <span class="nav-user">M. Schmidt</span>
+      <a class="nav-link" href="werkstatt-login.html">Abmelden</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container" data-od-id="auftraege-main">
+  <div class="page-header">
+    <h1>Aufträge</h1>
+    <p class="page-subtitle">Filtern Sie nach Status und suchen Sie nach Kennzeichen.</p>
+  </div>
+
+  <section class="section" data-od-id="auftraege-list" aria-label="Auftragsliste">
+    <div class="filter-bar" data-od-id="filter-bar">
+      <div class="filter-chips" role="group" aria-label="Nach Status filtern">
+        <button class="chip" type="button" data-status="alle" aria-pressed="true">Alle</button>
+        <button class="chip" type="button" data-status="ange" aria-pressed="false">angefragt</button>
+        <button class="chip" type="button" data-status="best" aria-pressed="false">bestätigt</button>
+        <button class="chip" type="button" data-status="arbeit" aria-pressed="false">in Arbeit</button>
+        <button class="chip" type="button" data-status="fertig" aria-pressed="false">fertig</button>
+        <button class="chip" type="button" data-status="abgeholt" aria-pressed="false">abgeholt</button>
+      </div>
+      <div class="filter-search">
+        <label class="field-label" for="plate-search" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Kennzeichen suchen</label>
+        <input id="plate-search" type="search" placeholder="Kennzeichen suchen" autocomplete="off" data-od-id="plate-search">
+      </div>
+    </div>
+
+    <p class="filter-count" id="filter-count" aria-live="polite" data-od-id="filter-count">8 Aufträge werden angezeigt</p>
+
+    <div class="table-wrap" id="table-view">
+      <table class="data-table" data-od-id="auftraege-table">
+        <thead>
+          <tr>
+            <th scope="col">Auftragsnummer</th>
+            <th scope="col">Kennzeichen</th>
+            <th scope="col">Fahrzeug</th>
+            <th scope="col">Problem</th>
+            <th scope="col">Status</th>
+            <th scope="col" class="col-date">Wunschtermin</th>
+            <th scope="col" class="col-actions">Aktionen</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <tr data-status="ange" data-plate="K-EF 9012">
+            <td class="col-order"><a href="werkstatt-auftrag.html">AU-2025-00124</a></td>
+            <td class="col-plate">K-EF 9012</td>
+            <td>Opel Astra</td>
+            <td>Klimaanlage schlägt nicht an</td>
+            <td><span class="badge badge-requested"><span class="badge-dot" aria-hidden="true"></span>angefragt</span></td>
+            <td class="col-date">18.03.2025</td>
+            <td class="col-actions">
+              <a class="btn btn-secondary btn-sm" href="werkstatt-auftrag.html">Bestätigen</a>
+              <a class="btn btn-ghost btn-sm" href="werkstatt-auftrag.html">Öffnen</a>
+            </td>
+          </tr>
+          <tr data-status="ange" data-plate="B-QR 3344">
+            <td class="col-order"><a href="werkstatt-auftrag.html">AU-2025-00123</a></td>
+            <td class="col-plate">B-QR 3344</td>
+            <td>Ford Focus</td>
+            <td>Ölverlust am Ventildeckel</td>
+            <td><span class="badge badge-requested"><span class="badge-dot" aria-hidden="true"></span>angefragt</span></td>
+            <td class="col-date">17.03.2025</td>
+            <td class="col-actions">
+              <a class="btn btn-secondary btn-sm" href="werkstatt-auftrag.html">Bestätigen</a>
+              <a class="btn btn-ghost btn-sm" href="werkstatt-auftrag.html">Öffnen</a>
+            </td>
+          </tr>
+          <tr data-status="best" data-plate="B-AB 1234">
+            <td class="col-order"><a href="werkstatt-auftrag.html">AU-2025-00122</a></td>
+            <td class="col-plate">B-AB 1234</td>
+            <td>Volkswagen Golf</td>
+            <td>Inspektion und TÜV-Vorbereitung</td>
+            <td><span class="badge badge-confirmed"><span class="badge-dot" aria-hidden="true"></span>bestätigt</span></td>
+            <td class="col-date">14.03.2025</td>
+            <td class="col-actions">
+              <a class="btn btn-secondary btn-sm" href="werkstatt-auftrag.html">In Arbeit setzen</a>
+              <a class="btn btn-ghost btn-sm" href="werkstatt-auftrag.html">Öffnen</a>
+            </td>
+          </tr>
+          <tr data-status="arbeit" data-plate="S-GH 5566">
+            <td class="col-order"><a href="werkstatt-auftrag.html">AU-2025-00121</a></td>
+            <td class="col-plate">S-GH 5566</td>
+            <td>Audi A4</td>
+            <td>Bremsen vorne quietschen</td>
+            <td><span class="badge badge-inprogress"><span class="badge-dot" aria-hidden="true"></span>in Arbeit</span></td>
+            <td class="col-date">12.03.2025</td>
+            <td class="col-actions">
+              <a class="btn btn-secondary btn-sm" href="werkstatt-auftrag.html">Positionen erfassen</a>
+              <a class="btn btn-ghost btn-sm" href="werkstatt-auftrag.html">Öffnen</a>
+            </td>
+          </tr>
+          <tr data-status="arbeit" data-plate="B-JK 7788">
+            <td class="col-order"><a href="werkstatt-auftrag.html">AU-2025-00120</a></td>
+            <td class="col-plate">B-JK 7788</td>
+            <td>Mercedes C 220</td>
+            <td>Wechselachse - Unwucht beim Fahren</td>
+            <td><span class="badge badge-inprogress"><span class="badge-dot" aria-hidden="true"></span>in Arbeit</span></td>
+            <td class="col-date">12.03.2025</td>
+            <td class="col-actions">
+              <a class="btn btn-secondary btn-sm" href="werkstatt-auftrag.html">Positionen erfassen</a>
+              <a class="btn btn-ghost btn-sm" href="werkstatt-auftrag.html">Öffnen</a>
+            </td>
+          </tr>
+          <tr data-status="arbeit" data-plate="D-LM 1122">
+            <td class="col-order"><a href="werkstatt-auftrag.html">AU-2025-00119</a></td>
+            <td class="col-plate">D-LM 1122</td>
+            <td>Toyota Yaris</td>
+            <td>Winterreifen einlagern, Sommerreifen montieren</td>
+            <td><span class="badge badge-inprogress"><span class="badge-dot" aria-hidden="true"></span>in Arbeit</span></td>
+            <td class="col-date">11.03.2025</td>
+            <td class="col-actions">
+              <a class="btn btn-secondary btn-sm" href="werkstatt-auftrag.html">Positionen erfassen</a>
+              <a class="btn btn-ghost btn-sm" href="werkstatt-auftrag.html">Öffnen</a>
+            </td>
+          </tr>
+          <tr data-status="fertig" data-plate="B-XY 7788">
+            <td class="col-order"><a href="werkstatt-auftrag.html">AU-2025-00118</a></td>
+            <td class="col-plate">B-XY 7788</td>
+            <td>Škoda Octavia</td>
+            <td>Motorleuchte, Fehlerspeicher auslesen</td>
+            <td><span class="badge badge-done"><span class="badge-dot" aria-hidden="true"></span>fertig</span></td>
+            <td class="col-date">28.02.2025</td>
+            <td class="col-actions">
+              <a class="btn btn-secondary btn-sm" href="werkstatt-auftrag.html">Abholung bestätigen</a>
+              <a class="btn btn-ghost btn-sm" href="werkstatt-auftrag.html">Öffnen</a>
+            </td>
+          </tr>
+          <tr data-status="abgeholt" data-plate="M-CD 4512">
+            <td class="col-order"><a href="werkstatt-auftrag.html">AU-2025-00117</a></td>
+            <td class="col-plate">M-CD 4512</td>
+            <td>BMW 320d</td>
+            <td>Service-Inspektion 60.000 km</td>
+            <td><span class="badge badge-pickedup"><span class="badge-dot" aria-hidden="true"></span>abgeholt</span></td>
+            <td class="col-date">26.02.2025</td>
+            <td class="col-actions">
+              <a class="btn btn-ghost btn-sm" href="werkstatt-auftrag.html">Öffnen</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="stack-list" id="stack-view">
+      <div class="stack-card" data-status="ange" data-plate="K-EF 9012">
+        <div class="stack-card-head">
+          <span class="stack-card-order">AU-2025-00124</span>
+          <span class="badge badge-requested"><span class="badge-dot" aria-hidden="true"></span>angefragt</span>
+        </div>
+        <dl class="stack-pairs">
+          <div class="stack-pair"><dt>Kennzeichen</dt><dd class="mono">K-EF 9012</dd></div>
+          <div class="stack-pair"><dt>Fahrzeug</dt><dd>Opel Astra</dd></div>
+          <div class="stack-pair"><dt>Wunschtermin</dt><dd class="num">18.03.2025</dd></div>
+        </dl>
+        <p style="margin:0 0 12px;overflow-wrap:anywhere;"><span style="font-size:13px;font-weight:500;color:var(--color-fg-muted);">Problem</span><br>Klimaanlage schlägt nicht an</p>
+        <div class="stack-card-actions">
+          <a class="btn btn-secondary btn-sm" href="werkstatt-auftrag.html">Bestätigen</a>
+          <a class="btn btn-ghost btn-sm" href="werkstatt-auftrag.html">Öffnen</a>
+        </div>
+      </div>
+      <div class="stack-card" data-status="ange" data-plate="B-QR 3344">
+        <div class="stack-card-head">
+          <span class="stack-card-order">AU-2025-00123</span>
+          <span class="badge badge-requested"><span class="badge-dot" aria-hidden="true"></span>angefragt</span>
+        </div>
+        <dl class="stack-pairs">
+          <div class="stack-pair"><dt>Kennzeichen</dt><dd class="mono">B-QR 3344</dd></div>
+          <div class="stack-pair"><dt>Fahrzeug</dt><dd>Ford Focus</dd></div>
+          <div class="stack-pair"><dt>Wunschtermin</dt><dd class="num">17.03.2025</dd></div>
+        </dl>
+        <p style="margin:0 0 12px;overflow-wrap:anywhere;"><span style="font-size:13px;font-weight:500;color:var(--color-fg-muted);">Problem</span><br>Ölverlust am Ventildeckel</p>
+        <div class="stack-card-actions">
+          <a class="btn btn-secondary btn-sm" href="werkstatt-auftrag.html">Bestätigen</a>
+          <a class="btn btn-ghost btn-sm" href="werkstatt-auftrag.html">Öffnen</a>
+        </div>
+      </div>
+      <div class="stack-card" data-status="best" data-plate="B-AB 1234">
+        <div class="stack-card-head">
+          <span class="stack-card-order">AU-2025-00122</span>
+          <span class="badge badge-confirmed"><span class="badge-dot" aria-hidden="true"></span>bestätigt</span>
+        </div>
+        <dl class="stack-pairs">
+          <div class="stack-pair"><dt>Kennzeichen</dt><dd class="mono">B-AB 1234</dd></div>
+          <div class="stack-pair"><dt>Fahrzeug</dt><dd>Volkswagen Golf</dd></div>
+          <div class="stack-pair"><dt>Wunschtermin</dt><dd class="num">14.03.2025</dd></div>
+        </dl>
+        <p style="margin:0 0 12px;overflow-wrap:anywhere;"><span style="font-size:13px;font-weight:500;color:var(--color-fg-muted);">Problem</span><br>Inspektion und TÜV-Vorbereitung</p>
+        <div class="stack-card-actions">
+          <a class="btn btn-secondary btn-sm" href="werkstatt-auftrag.html">In Arbeit setzen</a>
+          <a class="btn btn-ghost btn-sm" href="werkstatt-auftrag.html">Öffnen</a>
+        </div>
+      </div>
+      <div class="stack-card" data-status="arbeit" data-plate="S-GH 5566">
+        <div class="stack-card-head">
+          <span class="stack-card-order">AU-2025-00121</span>
+          <span class="badge badge-inprogress"><span class="badge-dot" aria-hidden="true"></span>in Arbeit</span>
+        </div>
+        <dl class="stack-pairs">
+          <div class="stack-pair"><dt>Kennzeichen</dt><dd class="mono">S-GH 5566</dd></div>
+          <div class="stack-pair"><dt>Fahrzeug</dt><dd>Audi A4</dd></div>
+          <div class="stack-pair"><dt>Wunschtermin</dt><dd class="num">12.03.2025</dd></div>
+        </dl>
+        <p style="margin:0 0 12px;overflow-wrap:anywhere;"><span style="font-size:13px;font-weight:500;color:var(--color-fg-muted);">Problem</span><br>Bremsen vorne quietschen</p>
+        <div class="stack-card-actions">
+          <a class="btn btn-secondary btn-sm" href="werkstatt-auftrag.html">Positionen erfassen</a>
+          <a class="btn btn-ghost btn-sm" href="werkstatt-auftrag.html">Öffnen</a>
+        </div>
+      </div>
+      <div class="stack-card" data-status="arbeit" data-plate="B-JK 7788">
+        <div class="stack-card-head">
+          <span class="stack-card-order">AU-2025-00120</span>
+          <span class="badge badge-inprogress"><span class="badge-dot" aria-hidden="true"></span>in Arbeit</span>
+        </div>
+        <dl class="stack-pairs">
+          <div class="stack-pair"><dt>Kennzeichen</dt><dd class="mono">B-JK 7788</dd></div>
+          <div class="stack-pair"><dt>Fahrzeug</dt><dd>Mercedes C 220</dd></div>
+          <div class="stack-pair"><dt>Wunschtermin</dt><dd class="num">12.03.2025</dd></div>
+        </dl>
+        <p style="margin:0 0 12px;overflow-wrap:anywhere;"><span style="font-size:13px;font-weight:500;color:var(--color-fg-muted);">Problem</span><br>Wechselachse — Unwucht beim Fahren</p>
+        <div class="stack-card-actions">
+          <a class="btn btn-secondary btn-sm" href="werkstatt-auftrag.html">Positionen erfassen</a>
+          <a class="btn btn-ghost btn-sm" href="werkstatt-auftrag.html">Öffnen</a>
+        </div>
+      </div>
+      <div class="stack-card" data-status="arbeit" data-plate="D-LM 1122">
+        <div class="stack-card-head">
+          <span class="stack-card-order">AU-2025-00119</span>
+          <span class="badge badge-inprogress"><span class="badge-dot" aria-hidden="true"></span>in Arbeit</span>
+        </div>
+        <dl class="stack-pairs">
+          <div class="stack-pair"><dt>Kennzeichen</dt><dd class="mono">D-LM 1122</dd></div>
+          <div class="stack-pair"><dt>Fahrzeug</dt><dd>Toyota Yaris</dd></div>
+          <div class="stack-pair"><dt>Wunschtermin</dt><dd class="num">11.03.2025</dd></div>
+        </dl>
+        <p style="margin:0 0 12px;overflow-wrap:anywhere;"><span style="font-size:13px;font-weight:500;color:var(--color-fg-muted);">Problem</span><br>Winterreifen einlagern, Sommerreifen montieren</p>
+        <div class="stack-card-actions">
+          <a class="btn btn-secondary btn-sm" href="werkstatt-auftrag.html">Positionen erfassen</a>
+          <a class="btn btn-ghost btn-sm" href="werkstatt-auftrag.html">Öffnen</a>
+        </div>
+      </div>
+      <div class="stack-card" data-status="fertig" data-plate="B-XY 7788">
+        <div class="stack-card-head">
+          <span class="stack-card-order">AU-2025-00118</span>
+          <span class="badge badge-done"><span class="badge-dot" aria-hidden="true"></span>fertig</span>
+        </div>
+        <dl class="stack-pairs">
+          <div class="stack-pair"><dt>Kennzeichen</dt><dd class="mono">B-XY 7788</dd></div>
+          <div class="stack-pair"><dt>Fahrzeug</dt><dd>Škoda Octavia</dd></div>
+          <div class="stack-pair"><dt>Wunschtermin</dt><dd class="num">28.02.2025</dd></div>
+        </dl>
+        <p style="margin:0 0 12px;overflow-wrap:anywhere;"><span style="font-size:13px;font-weight:500;color:var(--color-fg-muted);">Problem</span><br>Motorleuchte, Fehlerspeicher auslesen</p>
+        <div class="stack-card-actions">
+          <a class="btn btn-secondary btn-sm" href="werkstatt-auftrag.html">Abholung bestätigen</a>
+          <a class="btn btn-ghost btn-sm" href="werkstatt-auftrag.html">Öffnen</a>
+        </div>
+      </div>
+      <div class="stack-card" data-status="abgeholt" data-plate="M-CD 4512">
+        <div class="stack-card-head">
+          <span class="stack-card-order">AU-2025-00117</span>
+          <span class="badge badge-pickedup"><span class="badge-dot" aria-hidden="true"></span>abgeholt</span>
+        </div>
+        <dl class="stack-pairs">
+          <div class="stack-pair"><dt>Kennzeichen</dt><dd class="mono">M-CD 4512</dd></div>
+          <div class="stack-pair"><dt>Fahrzeug</dt><dd>BMW 320d</dd></div>
+          <div class="stack-pair"><dt>Wunschtermin</dt><dd class="num">26.02.2025</dd></div>
+        </dl>
+        <p style="margin:0 0 12px;overflow-wrap:anywhere;"><span style="font-size:13px;font-weight:500;color:var(--color-fg-muted);">Problem</span><br>Service-Inspektion 60.000 km</p>
+        <div class="stack-card-actions">
+          <a class="btn btn-ghost btn-sm" href="werkstatt-auftrag.html">Öffnen</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card hidden" id="empty-state" data-od-id="empty-state">
+      <div class="empty-state">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+          <rect x="8" y="10" width="32" height="28" rx="3" stroke="#EAF0F9" stroke-width="2"/>
+          <path d="M8 18h32" stroke="#EAF0F9" stroke-width="2"/>
+          <circle cx="24" cy="29" r="5" stroke="#EAF0F9" stroke-width="2"/>
+        </svg>
+        <h3>Keine Aufträge gefunden</h3>
+        <p>Für diese Filter gibt es derzeit keine Aufträge. Ändern Sie den Statusfilter oder löschen Sie die Suche im Kennzeichen.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="legal-footer" data-od-id="legal-footer">
+  <div class="legal-footer-inner">
+    <div class="legal-footer-links">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutzerklärung</a>
+    </div>
+    <div>Alle Angaben ohne Gewähr. Werkstattportal, Beispielwerkstatt</div>
+  </div>
+</footer>
+
+<div class="toast-region" id="toast-region" aria-live="polite"></div>
+
+<script>
+(function () {
+  var nav = document.getElementById('main-nav');
+  var menuBtn = document.querySelector('.menu-btn');
+  menuBtn.addEventListener('click', function () {
+    var open = nav.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  var chips = document.querySelectorAll('.chip');
+  var search = document.getElementById('plate-search');
+  var rows = document.querySelectorAll('#table-body tr');
+  var cards = document.querySelectorAll('#stack-view .stack-card');
+  var countEl = document.getElementById('filter-count');
+  var empty = document.getElementById('empty-state');
+  var tableView = document.getElementById('table-view');
+  var stackView = document.getElementById('stack-view');
+  var activeStatus = 'alle';
+
+  function applyFilters() {
+    var q = search.value.trim().toUpperCase();
+    var visible = 0;
+    rows.forEach(function (r) {
+      var match = (activeStatus === 'alle' || r.getAttribute('data-status') === activeStatus) &&
+        (!q || r.getAttribute('data-plate').indexOf(q) !== -1);
+      r.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+    cards.forEach(function (c) {
+      var match = (activeStatus === 'alle' || c.getAttribute('data-status') === activeStatus) &&
+        (!q || c.getAttribute('data-plate').indexOf(q) !== -1);
+      c.style.display = match ? '' : 'none';
+    });
+    var none = visible === 0;
+    empty.classList.toggle('hidden', !none);
+    tableView.classList.toggle('hidden', none);
+    if (none) {
+      stackView.style.display = 'none';
+    } else {
+      stackView.style.display = '';
+    }
+    countEl.textContent = visible === 1 ? '1 Auftrag wird angezeigt' : visible + ' Aufträge werden angezeigt';
+  }
+
+  chips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      chips.forEach(function (c) { c.setAttribute('aria-pressed', 'false'); });
+      chip.setAttribute('aria-pressed', 'true');
+      activeStatus = chip.getAttribute('data-status');
+      applyFilters();
+    });
+  });
+
+  search.addEventListener('input', applyFilters);
+})();
+</script>
+</body>
+</html>

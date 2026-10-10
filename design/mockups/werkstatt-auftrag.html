@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Auftrag AU-2025-00121 — Werkstattbereich — Werkstattportal</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-name">Werkstattportal</span>
+      <span class="brand-section">Werkstattbereich</span>
+    </a>
+    <div class="topbar-spacer"></div>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Menü">Menü</button>
+    <nav class="nav-links" id="main-nav" aria-label="Hauptnavigation">
+      <a class="nav-link" href="werkstatt-dashboard.html">Dashboard</a>
+      <a class="nav-link active" href="werkstatt-auftraege.html">Aufträge</a>
+      <span class="nav-user">M. Schmidt</span>
+      <a class="nav-link" href="werkstatt-login.html">Abmelden</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container" data-od-id="auftrag-main">
+  <div class="page-header" style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <div>
+      <h1>Auftrag <span class="mono" style="font-size:0.75em;">AU-2025-00121</span></h1>
+      <p class="page-subtitle">Angenommen am 06.03.2025 · Wunschtermin 12.03.2025</p>
+    </div>
+    <span class="badge badge-inprogress" id="detail-badge" style="font-size:15px;padding:6px 14px;"><span class="badge-dot" aria-hidden="true"></span>in Arbeit</span>
+  </div>
+
+  <div class="split-grid">
+    <div>
+      <!-- Fahrzeug & Kunde -->
+      <section class="section card" data-od-id="auftrag-info" aria-labelledby="info-title">
+        <h2 class="card-title-sm" id="info-title" style="font-size:17px;font-weight:600;margin-bottom:16px;">Fahrzeug und Kunde</h2>
+        <dl class="detail-grid">
+          <div class="detail-item"><dt>Kennzeichen</dt><dd class="mono">S-GH 5566</dd></div>
+          <div class="detail-item"><dt>Fahrzeug</dt><dd>Audi A4 2.0 TDI</dd></div>
+          <div class="detail-item"><dt>Kilometerstand</dt><dd class="num">84.210 km</dd></div>
+          <div class="detail-item"><dt>Kunde</dt><dd>T. Weber</dd></div>
+          <div class="detail-item"><dt>E-Mail</dt><dd>t.weber@beispiel.de</dd></div>
+          <div class="detail-item"><dt>Telefon</dt><dd class="num">030 9876543</dd></div>
+        </dl>
+        <div style="margin-top:16px;">
+          <div class="field-label">Problembeschreibung</div>
+          <p style="margin:4px 0 0;overflow-wrap:anywhere;">Bremsen vorne quietschen beim Anhalten, besonders bei Nässe. Bitte prüfen und gegebenenfalls Bremsbeläge und Scheiben tauschen.</p>
+        </div>
+      </section>
+
+      <!-- Positionen -->
+      <section class="section card" data-od-id="auftrag-positionen" aria-labelledby="pos-title">
+        <div class="card-header">
+          <h2 class="card-title-sm" id="pos-title">Erfasste Positionen</h2>
+          <button class="btn btn-secondary btn-sm" type="button" id="open-positions-modal" data-od-id="open-positions-modal">Positionen erfassen</button>
+        </div>
+
+        <div id="positions-content" data-od-id="positions-content">
+          <table class="invoice-lines" data-od-id="positions-table">
+            <thead>
+              <tr>
+                <th scope="col">Beschreibung</th>
+                <th scope="col" class="right">Menge</th>
+                <th scope="col" class="right">Einzelpreis</th>
+                <th scope="col" class="right">Betrag</th>
+              </tr>
+            </thead>
+            <tbody id="positions-body">
+              <tr>
+                <td>Arbeitszeit — Bremsbeläge vorne</td>
+                <td class="right num">1 h 30 min</td>
+                <td class="right num">95,00 €</td>
+                <td class="right num">142,50 €</td>
+              </tr>
+              <tr>
+                <td>Einzelteil — Bremsbelagsatz vorne</td>
+                <td class="right num">1</td>
+                <td class="right num">84,20 €</td>
+                <td class="right num">84,20 €</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="invoice-totals" data-od-id="positions-totals">
+            <div class="invoice-totals-row"><span>Nettobetrag</span><span class="num" id="pos-net">226,70 €</span></div>
+            <div class="invoice-totals-row"><span>Mehrwertsteuer (19 %)</span><span class="num" id="pos-vat">43,07 €</span></div>
+            <div class="invoice-totals-row grand"><span>Gesamtbetrag</span><span class="num" id="pos-gross">269,77 €</span></div>
+          </div>
+        </div>
+
+        <div id="positions-empty" class="hidden" data-od-id="positions-empty">
+          <div class="empty-state">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+              <rect x="10" y="8" width="28" height="32" rx="3" stroke="#EAF0F9" stroke-width="2"/>
+              <path d="M16 16h16M16 22h16M16 28h10" stroke="#EAF0F9" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <h3>Noch keine Positionen erfasst</h3>
+            <p>Erfassen Sie Arbeitszeit und Teile, bevor Sie den Auftrag fertigstellen. Die Rechnung wird danach automatisch erstellt.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Statusverlauf -->
+      <section class="section card" data-od-id="auftrag-timeline" aria-labelledby="tl-title">
+        <h2 class="card-title-sm" id="tl-title" style="font-size:17px;font-weight:600;margin-bottom:16px;">Statusverlauf</h2>
+        <ol class="timeline" id="detail-timeline">
+          <li>
+            <span class="timeline-node inprogress" aria-hidden="true"></span>
+            <p class="timeline-state">in Arbeit</p>
+            <p class="timeline-meta">07.03.2025, 08:10 Uhr · M. Schmidt</p>
+          </li>
+          <li>
+            <span class="timeline-node confirmed" aria-hidden="true"></span>
+            <p class="timeline-state">bestätigt</p>
+            <p class="timeline-meta">06.03.2025, 09:25 Uhr · M. Schmidt</p>
+          </li>
+          <li>
+            <span class="timeline-node requested" aria-hidden="true"></span>
+            <p class="timeline-state">angefragt</p>
+            <p class="timeline-meta">05.03.2025, 17:48 Uhr · Kunde</p>
+          </li>
+        </ol>
+        <p class="invoice-note" style="margin-top:16px;">Nächster erlaubter Schritt: <strong>fertig</strong>. Sprünge und Rückwärtswechsel werden abgelehnt.</p>
+      </section>
+    </div>
+
+    <!-- Seitenpanel Aktionen -->
+    <aside>
+      <section class="card" data-od-id="auftrag-actions" aria-labelledby="act-title">
+        <h2 class="card-title-sm" id="act-title" style="font-size:17px;font-weight:600;margin-bottom:16px;">Aktionen</h2>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <button class="btn btn-primary" type="button" id="open-status-modal" data-od-id="open-status-modal">Status setzen</button>
+          <button class="btn btn-secondary" type="button" id="open-positions-modal-2">Positionen erfassen</button>
+          <button class="btn btn-secondary" type="button" disabled aria-disabled="true" title="kommt bald">Rechnung anzeigen <span style="font-size:12px;font-weight:400;margin-left:6px;">kommt bald</span></button>
+        </div>
+        <p class="invoice-note" style="margin-top:16px;">Der Auftrag ist <span id="side-status">in Arbeit</span>. Fertigstellen erst, wenn alle Positionen erfasst sind.</p>
+      </section>
+
+      <section class="card" style="margin-top:24px;" data-od-id="auftrag-rechnung-hint" aria-labelledby="inv-hint-title">
+        <h2 class="card-title-sm" id="inv-hint-title" style="font-size:17px;font-weight:600;margin-bottom:8px;">Rechnung</h2>
+        <p style="color:var(--color-fg-muted);font-size:15px;margin:0;">Die Rechnung wird erstellt, sobald der Auftrag auf <strong>fertig</strong> gesetzt ist. Ein zweites Fertigstellen erzeugt keine zweite Rechnung.</p>
+      </section>
+    </aside>
+  </div>
+</main>
+
+<footer class="legal-footer" data-od-id="legal-footer">
+  <div class="legal-footer-inner">
+    <div class="legal-footer-links">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutzerklärung</a>
+    </div>
+    <div>Alle Angaben ohne Gewähr. Werkstattportal, Beispielwerkstatt</div>
+  </div>
+</footer>
+
+<!-- Modal: Positionen erfassen -->
+<div class="modal-overlay" id="positions-modal" role="dialog" aria-modal="true" aria-labelledby="pm-title" data-od-id="positions-modal">
+  <div class="modal modal-wide">
+    <div class="modal-header">
+      <h2 id="pm-title">Positionen erfassen</h2>
+      <button class="modal-close" type="button" data-close-modal aria-label="Schließen">✕</button>
+    </div>
+    <form id="positions-form" class="form-stack" novalidate data-od-id="positions-form">
+      <div class="field">
+        <label class="field-label" for="pos-typ">Typ</label>
+        <select class="field-select" id="pos-typ">
+          <option value="arbeit">Arbeitszeit</option>
+          <option value="teil">Einzelteil</option>
+        </select>
+        <div class="field-helper"></div>
+      </div>
+      <div class="field">
+        <label class="field-label" for="pos-beschreibung">Beschreibung <span class="field-required">erforderlich</span></label>
+        <input class="field-input" id="pos-beschreibung" type="text" placeholder="z. B. Bremsbeläge vorne" required>
+        <div class="field-helper" id="pos-beschreibung-helper"></div>
+      </div>
+      <div class="field" id="pos-menge-arbeit">
+        <label class="field-label" for="pos-dauer">Dauer (Stunden) <span class="field-required">erforderlich</span></label>
+        <input class="field-input numeric" id="pos-dauer" type="text" inputmode="decimal" placeholder="1,5">
+        <div class="field-helper">Dezimalzahl mit Komma, z. B. 1,5 für 1 h 30 min</div>
+      </div>
+      <div class="field hidden" id="pos-menge-teil">
+        <label class="field-label" for="pos-anzahl">Anzahl <span class="field-required">erforderlich</span></label>
+        <input class="field-input numeric" id="pos-anzahl" type="text" inputmode="numeric" placeholder="1">
+        <div class="field-helper">Ganze Zahl</div>
+      </div>
+      <div class="field">
+        <label class="field-label" for="pos-preis">Einzelpreis netto (€) <span class="field-required">erforderlich</span></label>
+        <input class="field-input numeric" id="pos-preis" type="text" inputmode="decimal" placeholder="95,00" required>
+        <div class="field-helper" id="pos-preis-helper">Stundensatz 95,00 € für Arbeitszeit</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-close-modal>Abbrechen</button>
+        <button class="btn btn-primary" type="submit">Position hinzufügen</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Status setzen -->
+<div class="modal-overlay" id="status-modal" role="dialog" aria-modal="true" aria-labelledby="sm-title" data-od-id="status-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="sm-title">Status setzen</h2>
+      <button class="modal-close" type="button" data-close-modal aria-label="Schließen">✕</button>
+    </div>
+    <p style="margin-bottom:16px;">Auftrag <span class="mono">AU-2025-00121</span> (Kennzeichen <span class="mono">S-GH 5566</span>)</p>
+    <form id="status-set-form" class="form-stack" novalidate data-od-id="status-set-form">
+      <div class="field">
+        <label class="field-label" for="status-target">Neuer Status</label>
+        <select class="field-select" id="status-target">
+          <option value="fertig">fertig</option>
+          <option value="abgeholt" disabled>abgeholt — nach „fertig“ möglich</option>
+        </select>
+        <div class="field-helper">Erlaubt sind nur Fortschritte entlang der Lebensdauer. Sprünge und Rückwärts werden abgelehnt.</div>
+      </div>
+      <div class="alert alert-warning" role="status">
+        <span class="alert-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2l6.5 11h-13L8 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6.5v3M8 11.5h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </span>
+        <span>Mit „fertig“ wird eine Nachricht in die Rechnungswarteschlange gestellt. Es wird genau eine Rechnung erstellt.</span>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-close-modal>Abbrechen</button>
+        <button class="btn btn-primary" type="submit" id="status-confirm-btn">Auf AU-2025-00121 auf „fertig“ setzen</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast-region" id="toast-region" aria-live="polite"></div>
+
+<script>
+(function () {
+  var nav = document.getElementById('main-nav');
+  var menuBtn = document.querySelector('.menu-btn');
+  menuBtn.addEventListener('click', function () {
+    var open = nav.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  var toastRegion = document.getElementById('toast-region');
+  function showToast(msg, isError) {
+    var t = document.createElement('div');
+    t.className = 'toast' + (isError ? ' error' : '');
+    t.setAttribute('role', isError ? 'alert' : 'status');
+    t.textContent = msg;
+    toastRegion.appendChild(t);
+    setTimeout(function () { t.remove(); }, 6000);
+  }
+
+  // ---- Modal management ----
+  var lastTrigger = null;
+  function openModal(id, trigger) {
+    var overlay = document.getElementById(id);
+    lastTrigger = trigger || null;
+    overlay.classList.add('open');
+    var focusable = overlay.querySelector('input, select, button');
+    if (focusable) focusable.focus();
+    document.addEventListener('keydown', onKeydown);
+  }
+  function closeModal() {
+    document.querySelectorAll('.modal-overlay.open').forEach(function (o) { o.classList.remove('open'); });
+    document.removeEventListener('keydown', onKeydown);
+    if (lastTrigger) { lastTrigger.focus(); lastTrigger = null; }
+  }
+  function onKeydown(e) {
+    if (e.key === 'Escape') closeModal();
+  }
+  document.querySelectorAll('[data-close-modal]').forEach(function (b) {
+    b.addEventListener('click', closeModal);
+  });
+  document.querySelectorAll('.modal-overlay').forEach(function (o) {
+    o.addEventListener('click', function (e) {
+      if (e.target === o) closeModal();
+    });
+  });
+
+  document.getElementById('open-positions-modal').addEventListener('click', function () { openModal('positions-modal', this); });
+  document.getElementById('open-positions-modal-2').addEventListener('click', function () { openModal('positions-modal', this); });
+  document.getElementById('open-status-modal').addEventListener('click', function () { openModal('status-modal', this); });
+
+  // ---- Positions form ----
+  var posTyp = document.getElementById('pos-typ');
+  var mengeArbeit = document.getElementById('pos-menge-arbeit');
+  var mengeTeil = document.getElementById('pos-menge-teil');
+  posTyp.addEventListener('change', function () {
+    var isArbeit = posTyp.value === 'arbeit';
+    mengeArbeit.classList.toggle('hidden', !isArbeit);
+    mengeTeil.classList.toggle('hidden', isArbeit);
+  });
+
+  function parseDecimalDE(v) {
+    return parseFloat(String(v).replace(/\./g, '').replace(',', '.'));
+  }
+  function formatMoney(cents) {
+    var sign = cents < 0 ? '-' : '';
+    var abs = Math.abs(cents);
+    var Euro = Math.floor(abs / 100);
+    var ct = String(abs % 100).padStart(2, '0');
+    var eurStr = String(Euro).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return sign + eurStr + ',' + ct + ' €';
+  }
+  function formatDuration(hours) {
+    var h = Math.floor(hours);
+    var m = Math.round((hours - h) * 60);
+    if (h === 0) return m + ' min';
+    return h + ' h' + (m ? ' ' + m + ' min' : '');
+  }
+
+  var netCents = 22670; // existing: 142.50 + 84.20
+  var hasPositions = true;
+
+  function renderTotals() {
+    var vat = Math.round(netCents * 0.19);
+    document.getElementById('pos-net').textContent = formatMoney(netCents);
+    document.getElementById('pos-vat').textContent = formatMoney(vat);
+    document.getElementById('pos-gross').textContent = formatMoney(netCents + vat);
+  }
+
+  document.getElementById('positions-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var desc = document.getElementById('pos-beschreibung').value.trim();
+    var descHelper = document.getElementById('pos-beschreibung-helper');
+    var preis = document.getElementById('pos-preis').value.trim();
+    var preisHelper = document.getElementById('pos-preis-helper');
+    var ok = true;
+
+    if (!desc) {
+      descHelper.textContent = 'Beschreibung ist erforderlich.';
+      descHelper.classList.add('error');
+      ok = false;
+    } else {
+      descHelper.textContent = '';
+      descHelper.classList.remove('error');
+    }
+
+    var priceNum = parseDecimalDE(preis);
+    if (!preis || isNaN(priceNum) || priceNum < 0) {
+      preisHelper.textContent = 'Bitte einen gültigen Betrag eingeben, z. B. 95,00.';
+      preisHelper.classList.add('error');
+      ok = false;
+    } else {
+      preisHelper.textContent = posTyp.value === 'arbeit' ? 'Stundensatz 95,00 € für Arbeitszeit' : 'Preis pro Teil';
+      preisHelper.classList.remove('error');
+    }
+    if (!ok) return;
+
+    var body = document.getElementById('positions-body');
+    var qtyText, lineCents;
+    if (posTyp.value === 'arbeit') {
+      var hours = parseDecimalDE(document.getElementById('pos-dauer').value) || 1;
+      qtyText = formatDuration(hours);
+      lineCents = Math.round(hours * 60 * priceNum); // hours * price in cents
+      lineCents = Math.round(hours * priceNum * 100);
+    } else {
+      var qty = parseInt(document.getElementById('pos-anzahl').value, 10) || 1;
+      qtyText = String(qty);
+      lineCents = Math.round(qty * priceNum * 100);
+    }
+
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td></td><td class="right num"></td><td class="right num"></td><td class="right num"></td>';
+    tr.children[0].textContent = (posTyp.value === 'arbeit' ? 'Arbeitszeit — ' : 'Einzelteil — ') + desc;
+    tr.children[1].textContent = qtyText;
+    tr.children[2].textContent = formatMoney(Math.round(priceNum * 100));
+    tr.children[3].textContent = formatMoney(lineCents);
+    body.appendChild(tr);
+
+    netCents += lineCents;
+    hasPositions = true;
+    renderTotals();
+
+    this.reset();
+    document.getElementById('pos-menge-teil').classList.add('hidden');
+    document.getElementById('pos-menge-arbeit').classList.remove('hidden');
+    closeModal();
+    showToast('Position hinzugefügt. Nettobetrag ' + formatMoney(netCents) + '.');
+  });
+
+  // ---- Status setzen ----
+  var currentStatus = 'in Arbeit';
+  document.getElementById('status-set-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var target = document.getElementById('status-target').value;
+    closeModal();
+
+    // update badge
+    var badge = document.getElementById('detail-badge');
+    badge.className = 'badge badge-done';
+    badge.innerHTML = '<span class="badge-dot" aria-hidden="true"></span>fertig';
+    document.getElementById('side-status').textContent = 'fertig';
+
+    // prepend timeline entry
+    var tl = document.getElementById('detail-timeline');
+    var li = document.createElement('li');
+    li.innerHTML = '<span class="timeline-node done" aria-hidden="true"></span>' +
+      '<p class="timeline-state">fertig</p>' +
+      '<p class="timeline-meta">10.03.2025, 14:32 Uhr · M. Schmidt</p>';
+    tl.insertBefore(li, tl.firstChild);
+
+    // pending note
+    var note = tl.parentElement.querySelector('.invoice-note');
+    if (note) note.innerHTML = 'Nächster erlaubter Schritt: <strong>abgeholt</strong>. Sprünge und Rückwärtswechsel werden abgelehnt.';
+
+    // invoice hint in aside
+    var invCard = document.getElementById('auftrag-rechnung-hint');
+    invCard.querySelector('p').innerHTML = 'Die Rechnung wurde erstellt und dem Kunden im Postausgang benachrichtigt. <a href="rechnung.html">Rechnung ansehen</a>';
+
+    // side panel button enable
+    var sideBtn = invCard.closest('aside') ? null : null;
+    document.querySelectorAll('#auftrag-actions button[disabled]').forEach(function (b) {
+      if (b.textContent.indexOf('Rechnung') !== -1) {
+        b.disabled = false;
+        b.removeAttribute('aria-disabled');
+        b.removeAttribute('title');
+        b.innerHTML = 'Rechnung anzeigen';
+        b.classList.remove('btn-secondary');
+        b.classList.add('btn-secondary');
+        b.addEventListener('click', function () { window.location.href = 'rechnung.html'; });
+      }
+    });
+
+    showToast('Auftrag AU-2025-00121 ist jetzt „fertig“. Rechnung wird erstellt.');
+  });
+
+  renderTotals();
+})();
+</script>
+</body>
+</html>
