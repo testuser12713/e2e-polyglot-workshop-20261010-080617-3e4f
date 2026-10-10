@@ -153,6 +153,58 @@
           "bytes": 16
         }
       }
+    },
+    {
+      "name": "web",
+      "dir": "frontend",
+      "stack": "web-vite",
+      "kind": "static",
+      "serve_dir": "dist",
+      "install": [
+        [
+          "npm",
+          "ci",
+          "--no-audit",
+          "--no-fund"
+        ]
+      ],
+      "build": [
+        [
+          "npm",
+          "run",
+          "build"
+        ]
+      ],
+      "test": [
+        [
+          "npm",
+          "test"
+        ]
+      ],
+      "typecheck": [
+        [
+          "npm",
+          "run",
+          "typecheck"
+        ]
+      ],
+      "start": [
+        "npm",
+        "run",
+        "preview",
+        "--",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "${PORT}"
+      ],
+      "port": 4173,
+      "port_env": "PORT",
+      "env": {
+        "VITE_API_BASE_URL": {
+          "dev": "${service:api.origin}"
+        }
+      }
     }
   ]
 }

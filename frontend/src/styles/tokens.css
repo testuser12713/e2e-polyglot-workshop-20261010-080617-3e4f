@@ -1,0 +1,79 @@
+/*
+ * Design tokens — values come from DESIGN.md and are the single source of truth.
+ * Developers reference these CSS custom properties; never copy the raw values.
+ */
+:root {
+  /* Colors */
+  --color-bg: #f6f7f9;
+  --color-surface: #ffffff;
+  --color-surface-sunken: #eef0f3;
+  --color-fg: #1a1d21;
+  --color-fg-muted: #5b6470;
+  --color-fg-subtle: #858e9a;
+  --color-border: #dce0e5;
+  --color-border-strong: #b9c0c9;
+  --color-accent: #1e4e8c;
+  --color-accent-hover: #17407a;
+  --color-accent-active: #123564;
+  --color-accent-soft: #eaf0f9;
+  --color-accent-contrast: #ffffff;
+  --color-focus-ring: #7ba7de;
+
+  --color-status-requested-bg: #eef0f3;
+  --color-status-requested-fg: #5b6470;
+  --color-status-confirmed-bg: #eaf0f9;
+  --color-status-confirmed-fg: #1e4e8c;
+  --color-status-inprogress-bg: #fcf3e3;
+  --color-status-inprogress-fg: #8a5a12;
+  --color-status-done-bg: #e9f4ee;
+  --color-status-done-fg: #22664a;
+  --color-status-pickedup-bg: #f0f1f3;
+  --color-status-pickedup-fg: #6b7280;
+
+  --color-success: #2f7d5b;
+  --color-warning: #b7791f;
+  --color-danger: #b42318;
+  --color-danger-soft: #fbeae8;
+  --color-success-soft: #e9f4ee;
+  --color-info-soft: #eaf0f9;
+  --color-shadow-color: rgba(16, 24, 40, 0.08);
+
+  /* Typography */
+  --font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, "Noto Sans", sans-serif;
+  --font-family-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+  --font-heading-weight: 600;
+  --font-body-weight: 400;
+  --font-label-weight: 500;
+  --size-xs: 12px;
+  --size-sm: 13px;
+  --size-base: 15px;
+  --size-lg: 17px;
+  --size-h3: 20px;
+  --size-h2: 24px;
+  --size-h1: 30px;
+  --line-height-body: 1.55;
+  --line-height-heading: 1.25;
+  --letter-spacing-heading: -0.01em;
+
+  /* Spacing */
+  --space-0: 4px;
+  --space-1: 8px;
+  --space-2: 12px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 48px;
+
+  /* Radii */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+
+  /* Layout */
+  --container-max-width: 1200px;
+  --reading-max-width: 720px;
+  --nav-height: 64px;
+}
