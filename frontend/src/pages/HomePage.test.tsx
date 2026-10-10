@@ -42,6 +42,9 @@ describe("HomePage hub", () => {
     expect(
       screen.getByRole("link", { name: "Zum Kundenbereich" }),
     ).toHaveAttribute("href", "/status");
+    expect(
+      screen.getByRole("link", { name: "Auftrag anfragen" }),
+    ).toHaveAttribute("href", "/anfrage");
     expect(screen.getByRole("link", { name: "Status abrufen" })).toHaveAttribute(
       "href",
       "/status",

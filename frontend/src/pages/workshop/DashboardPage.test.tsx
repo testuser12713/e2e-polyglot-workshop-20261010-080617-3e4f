@@ -171,7 +171,10 @@ describe("DashboardPage", () => {
     );
 
     expect(
-      screen.getByRole("heading", { level: 1, name: "Werkstatt-Anmeldung" }),
+      screen.getByRole("heading", {
+        level: 1,
+        name: "Anmeldung Werkstattbereich",
+      }),
     ).toBeInTheDocument();
   });
 });

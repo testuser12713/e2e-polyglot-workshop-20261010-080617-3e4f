@@ -119,9 +119,9 @@ function normalizePlate(value: string): string {
 /* ------------------------------------------------------------------ */
 
 /**
- * Customer appointment request (route "/"). The request half of the approved
- * screen design (design/mockups/kunde.html): customer, vehicle, preferred date
- * and problem description, submitting POST /api/orders (AC-04).
+ * Customer appointment request (route "/anfrage"). The request half of the
+ * approved screen design (design/mockups/kunde.html): customer, vehicle,
+ * preferred date and problem description, submitting POST /api/orders (AC-04).
  */
 export default function RequestPage() {
   const [values, setValues] = useState<FormValues>(EMPTY_VALUES);

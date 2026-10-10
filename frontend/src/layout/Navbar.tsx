@@ -8,7 +8,7 @@ interface NavItem {
 }
 
 const CUSTOMER_LINKS: NavItem[] = [
-  { to: "/", label: "Termin anfragen" },
+  { to: "/anfrage", label: "Termin anfragen" },
   { to: "/status", label: "Status verfolgen" },
   { to: "/rechnung", label: "Rechnung" },
 ];

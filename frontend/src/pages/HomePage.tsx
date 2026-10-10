@@ -34,6 +34,9 @@ export default function HomePage() {
           </Link>
           <ul className="hub-links">
             <li>
+              <Link to="/anfrage">Auftrag anfragen</Link>
+            </li>
+            <li>
               <Link to="/status">Status abrufen</Link>
             </li>
             <li>
