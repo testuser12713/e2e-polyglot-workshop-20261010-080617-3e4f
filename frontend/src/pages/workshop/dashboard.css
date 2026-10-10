@@ -1,0 +1,132 @@
+/*
+ * Styles for the workshop dashboard only. Colours, spacings, radii and type
+ * sizes all come from the design tokens in tokens.css (DESIGN.md is binding).
+ * Kept in its own file so the shared global.css is not a merge point for the
+ * parallel workshop tickets.
+ */
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.section__title {
+  font-size: var(--size-lg);
+  font-weight: var(--font-heading-weight);
+}
+
+/* Stat tiles --------------------------------------------------------- */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+.stat-tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.stat-tile__label {
+  font-size: var(--size-sm);
+  font-weight: var(--font-label-weight);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+}
+
+.stat-tile__value {
+  font-size: var(--size-h1);
+  font-weight: var(--font-heading-weight);
+  color: var(--color-fg);
+}
+
+.stat-tile__delta {
+  font-size: var(--size-sm);
+  color: var(--color-fg-muted);
+}
+
+@media (min-width: 900px) {
+  .stat-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .stat-tile--span-full {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1200px) {
+  .stat-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .stat-tile--span-full {
+    grid-column: auto;
+  }
+}
+
+/* Recent orders table ------------------------------------------------ */
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th {
+  padding: var(--space-2) var(--space-3);
+  text-align: left;
+  font-size: var(--size-sm);
+  font-weight: var(--font-heading-weight);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+  background: var(--color-surface-sunken);
+}
+
+.data-table td {
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.data-table tbody tr:hover {
+  background: var(--color-bg);
+}
+
+.data-table__amount {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Quick actions ------------------------------------------------------ */
+
+.dashboard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+/* States ------------------------------------------------------------- */
+
+.dashboard-state {
+  padding: var(--space-4);
+  color: var(--color-fg-muted);
+}
+
+.dashboard-error {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
