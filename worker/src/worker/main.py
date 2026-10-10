@@ -33,6 +33,7 @@ BRPOP_TIMEOUT_SECONDS = 3
 RECONNECT_DELAY_SECONDS = 1.0
 
 NOTIFICATION_CHANNEL = "email"
+NOTIFICATION_STATUS = "queued"
 
 
 def configure_logging() -> None:
@@ -98,6 +99,7 @@ def build_notification(order: dict[str, Any], invoice: Invoice) -> dict[str, Any
     """
     gross = f"{invoice.gross_cents / 100:.2f}".replace(".", ",")
     return {
+        "order_id": order.get("order_id"),
         "order_number": invoice.order_number,
         "recipient": order.get("customer_email"),
         "subject": f"Ihre Rechnung zum Auftrag {invoice.order_number}",
@@ -108,6 +110,7 @@ def build_notification(order: dict[str, Any], invoice: Invoice) -> dict[str, Any
             f"Mit freundlichen Grüßen\nIhre Werkstatt"
         ),
         "channel": NOTIFICATION_CHANNEL,
+        "status": NOTIFICATION_STATUS,
     }
 
 
@@ -122,7 +125,14 @@ def process_one(
         return False
     _key, payload = job
     logger.info("received an invoice job from queue '%s'", config.invoice_queue_key)
-    handle_job(conn, config, payload)
+    try:
+        handle_job(conn, config, payload)
+    except Exception as exc:
+        conn.rollback()
+        logger.error(
+            "failed to process an invoice job (%s); the job was skipped",
+            type(exc).__name__,
+        )
     return True
 
 
@@ -144,7 +154,7 @@ def consume_queue(
 
 def run(config: WorkerConfig) -> None:
     """Connect to both stores, announce readiness and consume the queue."""
-    with psycopg.connect(config.database_url) as conn:
+    with psycopg.connect(config.database_url, autocommit=True) as conn:
         client = redis.Redis.from_url(config.valkey_url, decode_responses=True)
         try:
             client.ping()

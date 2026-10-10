@@ -1,84 +1,28 @@
 """Shared fixtures for the invoice-generation tests.
 
-The tests run against the real PostgreSQL and Valkey the worker uses. Every test
-gets a throw-away PostgreSQL schema (``search_path``) it builds itself, so it
-never touches tables another service or another test owns, and a throw-away
-Valkey list it empties on start and on teardown.
+The tests run against the real PostgreSQL and Valkey the worker uses, and they
+build the schema from the API's actual migration
+(``backend/migrations/0001_init.sql``) inside a throw-away PostgreSQL schema.
+That way a column or table the product really has cannot hide behind a private
+test schema, and every test owns only its own rows.
 """
 
 from __future__ import annotations
 
 import os
 import uuid
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator, Sequence
+from pathlib import Path
+from typing import Any
 
 import psycopg
 import pytest
 import redis
 
 TEST_SCHEMA = "worker_test"
+MIGRATION_PATH = Path(__file__).resolve().parents[2] / "backend" / "migrations" / "0001_init.sql"
 
-SCHEMA_STATEMENTS = (
-    """
-    CREATE TABLE customers (
-        id BIGSERIAL PRIMARY KEY,
-        name TEXT NOT NULL,
-        email TEXT NOT NULL,
-        phone TEXT NOT NULL DEFAULT ''
-    )
-    """,
-    """
-    CREATE TABLE orders (
-        id BIGSERIAL PRIMARY KEY,
-        order_number TEXT NOT NULL UNIQUE,
-        customer_id BIGINT REFERENCES customers(id),
-        status TEXT NOT NULL DEFAULT 'angefragt'
-    )
-    """,
-    """
-    CREATE TABLE order_items (
-        id BIGSERIAL PRIMARY KEY,
-        order_number TEXT NOT NULL,
-        kind TEXT NOT NULL,
-        description TEXT NOT NULL,
-        quantity INTEGER NOT NULL,
-        unit_price_cents INTEGER NOT NULL DEFAULT 0
-    )
-    """,
-    """
-    CREATE TABLE invoices (
-        id BIGSERIAL PRIMARY KEY,
-        order_number TEXT NOT NULL UNIQUE,
-        net_cents INTEGER NOT NULL,
-        vat_cents INTEGER NOT NULL,
-        gross_cents INTEGER NOT NULL,
-        created_at TIMESTAMPTZ NOT NULL DEFAULT now()
-    )
-    """,
-    """
-    CREATE TABLE invoice_items (
-        id BIGSERIAL PRIMARY KEY,
-        invoice_id BIGINT NOT NULL REFERENCES invoices(id) ON DELETE CASCADE,
-        kind TEXT NOT NULL,
-        description TEXT NOT NULL,
-        quantity INTEGER NOT NULL,
-        unit_price_cents INTEGER NOT NULL,
-        total_cents INTEGER NOT NULL
-    )
-    """,
-    """
-    CREATE TABLE outbox (
-        id BIGSERIAL PRIMARY KEY,
-        order_number TEXT NOT NULL,
-        recipient TEXT,
-        subject TEXT NOT NULL DEFAULT '',
-        body TEXT NOT NULL DEFAULT '',
-        channel TEXT NOT NULL DEFAULT 'email',
-        created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-        sent_at TIMESTAMPTZ
-    )
-    """,
-)
+OrderSeeder = Callable[..., dict[str, Any]]
 
 
 def database_url() -> str:
@@ -97,20 +41,83 @@ def valkey_url() -> str:
 
 @pytest.fixture()
 def pg_conn() -> Iterator[psycopg.Connection]:
-    """A connection whose search_path points at a freshly built test schema."""
-    with psycopg.connect(database_url()) as conn:
-        with conn.cursor() as cur:
-            cur.execute(f"DROP SCHEMA IF EXISTS {TEST_SCHEMA} CASCADE")
-            cur.execute(f"CREATE SCHEMA {TEST_SCHEMA}")
-            cur.execute(f"SET search_path TO {TEST_SCHEMA}")
-            for statement in SCHEMA_STATEMENTS:
-                cur.execute(statement)
-        conn.commit()
-        yield conn
-        with conn.cursor() as cur:
-            cur.execute("SET search_path TO public")
-            cur.execute(f"DROP SCHEMA IF EXISTS {TEST_SCHEMA} CASCADE")
-        conn.commit()
+    """A connection whose search_path points at the real migrated test schema."""
+    if not MIGRATION_PATH.is_file():
+        pytest.fail(f"the API migration is missing at {MIGRATION_PATH}")
+    migration_sql = MIGRATION_PATH.read_text()
+
+    conn = psycopg.connect(database_url(), autocommit=True)
+    with conn.cursor() as cur:
+        cur.execute(f"DROP SCHEMA IF EXISTS {TEST_SCHEMA} CASCADE")
+        cur.execute(f"CREATE SCHEMA {TEST_SCHEMA}")
+        cur.execute(f"SET search_path TO {TEST_SCHEMA}")
+        cur.execute(migration_sql)
+    yield conn
+    with conn.cursor() as cur:
+        cur.execute("SET search_path TO public")
+        cur.execute(f"DROP SCHEMA IF EXISTS {TEST_SCHEMA} CASCADE")
+    conn.close()
+
+
+@pytest.fixture()
+def make_order(pg_conn: psycopg.Connection) -> OrderSeeder:
+    """Insert a customer, a vehicle, an order and its positions; return the order.
+
+    Returns a mapping with ``order_id``, ``order_number`` and ``customer_email``
+    plus the seeded ``items``.
+    """
+
+    def _make(
+        order_number: str = "A-1001",
+        items: Sequence[dict[str, Any]] = (),
+        email: str = "kunde@example.com",
+        status: str = "fertig",
+    ) -> dict[str, Any]:
+        with pg_conn.cursor() as cur:
+            cur.execute(
+                "INSERT INTO customers (name, email, phone) VALUES (%s, %s, %s) RETURNING id",
+                ("Max Mustermann", email, "0123"),
+            )
+            customer_id = cur.fetchone()[0]
+            cur.execute(
+                """
+                INSERT INTO vehicles (license_plate, make, model, mileage_km)
+                VALUES (%s, %s, %s, %s) RETURNING id
+                """,
+                (f"M-{uuid.uuid4().hex[:8].upper()}", "VW", "Golf", 100000),
+            )
+            vehicle_id = cur.fetchone()[0]
+            cur.execute(
+                """
+                INSERT INTO orders (order_number, customer_id, vehicle_id, status)
+                VALUES (%s, %s, %s, %s) RETURNING id
+                """,
+                (order_number, customer_id, vehicle_id, status),
+            )
+            order_id = cur.fetchone()[0]
+            for item in items:
+                cur.execute(
+                    """
+                    INSERT INTO order_items
+                        (order_id, kind, description, quantity, unit_price_cents)
+                    VALUES (%s, %s, %s, %s, %s)
+                    """,
+                    (
+                        order_id,
+                        item["kind"],
+                        item["description"],
+                        item["quantity"],
+                        item.get("unit_price_cents", 0),
+                    ),
+                )
+        return {
+            "order_id": order_id,
+            "order_number": order_number,
+            "customer_email": email,
+            "items": list(items),
+        }
+
+    return _make
 
 
 @pytest.fixture()

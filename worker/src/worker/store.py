@@ -2,8 +2,12 @@
 
 All SQL here uses bound parameters only; no statement is ever assembled from
 external input. The worker writes the finished invoice with its items into
-``invoices`` / ``invoice_items`` and queues one notification row in ``outbox`` for
-the customer. It never sends a real e-mail.
+``invoices`` / ``invoice_items`` and queues one notification row in the
+``notifications`` outbox for the customer. It never sends a real e-mail.
+
+The schema is owned by the API migration (``backend/migrations/0001_init.sql``):
+``invoices`` is unique on ``order_id`` and ``order_items`` / ``notifications``
+are keyed by ``order_id``, so every write resolves the order id first.
 """
 
 from __future__ import annotations
@@ -16,9 +20,9 @@ import psycopg
 from worker.invoice import Invoice, InvoiceItem
 
 INSERT_INVOICE_SQL = """
-INSERT INTO invoices (order_number, net_cents, vat_cents, gross_cents, created_at)
-VALUES (%s, %s, %s, %s, %s)
-ON CONFLICT (order_number) DO NOTHING
+INSERT INTO invoices (order_id, order_number, net_cents, vat_cents, gross_cents, created_at)
+VALUES (%s, %s, %s, %s, %s, %s)
+ON CONFLICT (order_id) DO NOTHING
 RETURNING id
 """
 
@@ -28,9 +32,9 @@ INSERT INTO invoice_items
 VALUES (%s, %s, %s, %s, %s, %s)
 """
 
-INSERT_OUTBOX_SQL = """
-INSERT INTO outbox (order_number, recipient, subject, body, channel)
-VALUES (%s, %s, %s, %s, %s)
+INSERT_NOTIFICATION_SQL = """
+INSERT INTO notifications (order_id, channel, recipient, subject, body, status)
+VALUES (%s, %s, %s, %s, %s, %s)
 """
 
 
@@ -50,15 +54,16 @@ def load_order(
 ) -> Mapping[str, Any] | None:
     """Load an order and its positions for invoice calculation.
 
-    Returns ``None`` when no such order exists. The order carries the customer's
-    e-mail so the outbox notification can be addressed to the right person.
+    Returns ``None`` when no such order exists. The mapping carries the order id
+    (the schema keys invoices, items and notifications by it), the customer's
+    e-mail for the notification, and the positions to bill.
     """
     with conn.cursor() as cur:
         cur.execute(
             """
-            SELECT c.email
+            SELECT o.id, c.email
             FROM orders o
-            LEFT JOIN customers c ON c.id = o.customer_id
+            JOIN customers c ON c.id = o.customer_id
             WHERE o.order_number = %s
             """,
             (order_number,),
@@ -66,16 +71,16 @@ def load_order(
         row = cur.fetchone()
         if row is None:
             return None
-        customer_email = row[0]
+        order_id, customer_email = row
 
         cur.execute(
             """
             SELECT kind, description, quantity, unit_price_cents
             FROM order_items
-            WHERE order_number = %s
+            WHERE order_id = %s
             ORDER BY id
             """,
-            (order_number,),
+            (order_id,),
         )
         items = [
             {
@@ -88,6 +93,7 @@ def load_order(
         ]
 
     return {
+        "order_id": order_id,
         "order_number": order_number,
         "customer_email": customer_email,
         "items": items,
@@ -102,14 +108,19 @@ def save_invoice_and_notification(
     """Persist an invoice, its items and one outbox notification in one transaction.
 
     Returns ``True`` when the invoice was newly written and ``False`` when an
-    invoice for the same order number already existed (the insert is guarded by
-    ``ON CONFLICT (order_number) DO NOTHING``). In the latter case no item and no
+    invoice for the same order already existed (the insert is guarded by
+    ``ON CONFLICT (order_id) DO NOTHING``). In the latter case no item and no
     notification row is written, so reprocessing an order cannot double up.
     """
-    with conn.cursor() as cur:
+    order_id = notification.get("order_id")
+    if order_id is None:
+        raise ValueError("the notification is missing order_id")
+
+    with conn.transaction(), conn.cursor() as cur:
         cur.execute(
             INSERT_INVOICE_SQL,
             (
+                order_id,
                 invoice.order_number,
                 invoice.net_cents,
                 invoice.vat_cents,
@@ -119,7 +130,6 @@ def save_invoice_and_notification(
         )
         returned = cur.fetchone()
         if returned is None:
-            conn.rollback()
             return False
         invoice_id = returned[0]
 
@@ -127,16 +137,16 @@ def save_invoice_and_notification(
             _insert_item(cur, invoice_id, item)
 
         cur.execute(
-            INSERT_OUTBOX_SQL,
+            INSERT_NOTIFICATION_SQL,
             (
-                notification["order_number"],
+                order_id,
+                notification.get("channel", "email"),
                 notification.get("recipient"),
                 notification.get("subject", ""),
                 notification.get("body", ""),
-                notification.get("channel", "email"),
+                notification.get("status", "queued"),
             ),
         )
-    conn.commit()
     return True
 
 
