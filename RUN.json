@@ -17,22 +17,140 @@
       "stack": "python",
       "kind": "worker",
       "install": [
-        ["${python}", "-m", "pip", "install", "-q", "-e", "."],
-        ["${python}", "-m", "pip", "install", "-q", "pytest>=8"]
+        [
+          "${python}",
+          "-m",
+          "pip",
+          "install",
+          "-q",
+          "-e",
+          "."
+        ],
+        [
+          "${python}",
+          "-m",
+          "pip",
+          "install",
+          "-q",
+          "pytest>=8"
+        ]
       ],
-      "test": [["${python}", "-m", "pytest", "-q"]],
-      "start": ["${python}", "-m", "worker.main"],
+      "test": [
+        [
+          "${python}",
+          "-m",
+          "pytest",
+          "-q"
+        ]
+      ],
+      "start": [
+        "${python}",
+        "-m",
+        "worker.main"
+      ],
       "ready_log": "worker ready",
-      "depends_on": ["db", "queue"],
+      "depends_on": [
+        "db",
+        "queue"
+      ],
       "env": {
-        "DATABASE_URL": { "dev": "${service:db.url}" },
-        "VALKEY_URL": { "dev": "${service:queue.url}" },
-        "HOURLY_RATE_CENTS": { "dev": "8000" },
-        "VAT_PERCENT": { "dev": "19" },
+        "DATABASE_URL": {
+          "dev": "${service:db.url}"
+        },
+        "VALKEY_URL": {
+          "dev": "${service:queue.url}"
+        },
+        "HOURLY_RATE_CENTS": {
+          "dev": "8000"
+        },
+        "VAT_PERCENT": {
+          "dev": "19"
+        },
         "INVOICE_QUEUE_KEY": {
           "dev": "invoices",
           "not_secret": true,
           "why": "name of the Valkey list the invoice jobs are queued on, not a credential"
+        }
+      }
+    },
+    {
+      "name": "api",
+      "dir": "backend",
+      "stack": "go",
+      "kind": "server",
+      "install": [
+        [
+          "go",
+          "mod",
+          "download"
+        ]
+      ],
+      "build": [
+        [
+          "go",
+          "build",
+          "./..."
+        ]
+      ],
+      "test": [
+        [
+          "go",
+          "test",
+          "./..."
+        ]
+      ],
+      "lint": [
+        [
+          "go",
+          "vet",
+          "./..."
+        ]
+      ],
+      "start": [
+        "go",
+        "run",
+        "./cmd/api"
+      ],
+      "port": 8080,
+      "port_env": "PORT",
+      "health": {
+        "path": "/api/health",
+        "expect_status": [
+          200
+        ]
+      },
+      "depends_on": [
+        "db",
+        "queue"
+      ],
+      "env": {
+        "DATABASE_URL": {
+          "dev": "${service:db.url}"
+        },
+        "VALKEY_URL": {
+          "dev": "${service:queue.url}"
+        },
+        "PORT": {
+          "dev": "8080"
+        },
+        "HOURLY_RATE_CENTS": {
+          "dev": "9500"
+        },
+        "INVOICE_QUEUE_KEY": {
+          "dev": "invoices",
+          "not_secret": true,
+          "why": "name of the Valkey list the API LPUSHes to and the worker BRPOPs from; it is a fixed key name shared by both services, not a credential"
+        },
+        "CORS_ORIGIN": {
+          "dev": "${service:web.origin}"
+        },
+        "INITIAL_EMPLOYEE_EMAIL": {
+          "generate": "hex",
+          "bytes": 8
+        },
+        "INITIAL_EMPLOYEE_PASSWORD": {
+          "generate": "hex",
+          "bytes": 16
         }
       }
     }
