@@ -1,0 +1,190 @@
+/*
+ * Customer lookup pages (Status / Rechnung).
+ *
+ * Page-local styles for the two customer pages built in this ticket. They use
+ * only the design tokens from tokens.css; imports keep the shared global.css
+ * untouched so parallel tickets do not collide on it.
+ */
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* Status lookup result header ---------------------------------------- */
+
+.lookup-result__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-3);
+}
+
+.lookup-result__id {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-0);
+}
+
+.lookup-result__number {
+  font-size: var(--size-lg);
+  font-weight: 600;
+}
+
+.lookup-result__plate {
+  color: var(--color-fg-muted);
+}
+
+.lookup-feedback {
+  margin-top: var(--space-3);
+}
+
+.lookup-result {
+  margin-top: var(--space-4);
+}
+
+.lookup-result__history {
+  margin-top: var(--space-4);
+}
+
+.lookup-result__history-title {
+  font-size: var(--size-lg);
+  margin-bottom: var(--space-2);
+}
+
+/* Status timeline ---------------------------------------------------- */
+
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-0) 0 var(--space-0) var(--space-4);
+  border-left: 2px solid var(--color-border);
+}
+
+.timeline li {
+  position: relative;
+  padding: 0 0 var(--space-4) var(--space-4);
+}
+
+.timeline li:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-node {
+  position: absolute;
+  left: -6px;
+  top: 4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-fg-subtle);
+}
+
+.timeline-node--requested {
+  background: var(--color-status-requested-fg);
+}
+
+.timeline-node--confirmed {
+  background: var(--color-status-confirmed-fg);
+}
+
+.timeline-node--inprogress {
+  background: var(--color-status-inprogress-fg);
+}
+
+.timeline-node--done {
+  background: var(--color-status-done-fg);
+}
+
+.timeline-node--pickedup {
+  background: var(--color-status-pickedup-fg);
+}
+
+.timeline-state {
+  font-size: var(--size-base);
+  font-weight: 600;
+  margin: 0;
+}
+
+.timeline-meta {
+  font-size: var(--size-sm);
+  color: var(--color-fg-muted);
+  margin: 2px 0 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Invoice ------------------------------------------------------------ */
+
+.invoice-lines {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--space-4);
+}
+
+.invoice-lines th {
+  font-size: var(--size-sm);
+  font-weight: 600;
+  color: var(--color-fg-muted);
+  text-align: left;
+  padding: 0 0 var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.invoice-lines th.right,
+.invoice-lines td.right {
+  text-align: right;
+}
+
+.invoice-lines td {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border);
+  font-variant-numeric: tabular-nums;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+
+.invoice-lines tr:last-child td {
+  border-bottom: none;
+}
+
+.invoice-totals {
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  margin-left: auto;
+  max-width: 360px;
+}
+
+.invoice-totals-row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-0) 0;
+  font-size: var(--size-base);
+  font-variant-numeric: tabular-nums;
+}
+
+.invoice-totals-row--grand {
+  border-top: 1px solid var(--color-border);
+  margin-top: var(--space-1);
+  padding-top: var(--space-2);
+  font-size: var(--size-h3);
+  font-weight: 600;
+}
+
+.invoice-note {
+  font-size: var(--size-sm);
+  color: var(--color-fg-muted);
+  margin-top: var(--space-3);
+}
+
+@media (max-width: 639px) {
+  .invoice-lines th,
+  .invoice-lines td {
+    font-size: var(--size-sm);
+    padding: var(--space-1) 0;
+  }
+}
