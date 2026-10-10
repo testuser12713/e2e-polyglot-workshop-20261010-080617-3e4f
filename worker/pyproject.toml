@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "worker"
+version = "0.1.0"
+description = "Invoice worker for the workshop portal: consumes the Valkey invoice queue and writes invoices to PostgreSQL."
+requires-python = ">=3.13"
+dependencies = [
+    "psycopg[binary]>=3.2,<4",
+    "redis>=5,<9",
+]
+
+[project.scripts]
+worker = "worker.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
