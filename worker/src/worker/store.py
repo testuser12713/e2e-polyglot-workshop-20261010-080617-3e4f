@@ -1,7 +1,9 @@
 """PostgreSQL persistence for the invoice worker.
 
-Only the signatures are defined here; the invoice-generation ticket fills in the
-SQL. All queries there must use bound parameters.
+All SQL here uses bound parameters only; no statement is ever assembled from
+external input. The worker writes the finished invoice with its items into
+``invoices`` / ``invoice_items`` and queues one notification row in ``outbox`` for
+the customer. It never sends a real e-mail.
 """
 
 from __future__ import annotations
@@ -11,20 +13,142 @@ from typing import Any
 
 import psycopg
 
-from worker.invoice import Invoice
+from worker.invoice import Invoice, InvoiceItem
+
+INSERT_INVOICE_SQL = """
+INSERT INTO invoices (order_number, net_cents, vat_cents, gross_cents, created_at)
+VALUES (%s, %s, %s, %s, %s)
+ON CONFLICT (order_number) DO NOTHING
+RETURNING id
+"""
+
+INSERT_INVOICE_ITEM_SQL = """
+INSERT INTO invoice_items
+    (invoice_id, kind, description, quantity, unit_price_cents, total_cents)
+VALUES (%s, %s, %s, %s, %s, %s)
+"""
+
+INSERT_OUTBOX_SQL = """
+INSERT INTO outbox (order_number, recipient, subject, body, channel)
+VALUES (%s, %s, %s, %s, %s)
+"""
 
 
 def invoice_exists(conn: psycopg.Connection[Any], order_number: str) -> bool:
     """Return whether an invoice already exists for the given order number."""
-    raise NotImplementedError("invoice_exists is implemented by the invoice-generation ticket")
+    with conn.cursor() as cur:
+        cur.execute(
+            "SELECT 1 FROM invoices WHERE order_number = %s LIMIT 1",
+            (order_number,),
+        )
+        return cur.fetchone() is not None
+
+
+def load_order(
+    conn: psycopg.Connection[Any],
+    order_number: str,
+) -> Mapping[str, Any] | None:
+    """Load an order and its positions for invoice calculation.
+
+    Returns ``None`` when no such order exists. The order carries the customer's
+    e-mail so the outbox notification can be addressed to the right person.
+    """
+    with conn.cursor() as cur:
+        cur.execute(
+            """
+            SELECT c.email
+            FROM orders o
+            LEFT JOIN customers c ON c.id = o.customer_id
+            WHERE o.order_number = %s
+            """,
+            (order_number,),
+        )
+        row = cur.fetchone()
+        if row is None:
+            return None
+        customer_email = row[0]
+
+        cur.execute(
+            """
+            SELECT kind, description, quantity, unit_price_cents
+            FROM order_items
+            WHERE order_number = %s
+            ORDER BY id
+            """,
+            (order_number,),
+        )
+        items = [
+            {
+                "kind": item_row[0],
+                "description": item_row[1],
+                "quantity": item_row[2],
+                "unit_price_cents": item_row[3],
+            }
+            for item_row in cur.fetchall()
+        ]
+
+    return {
+        "order_number": order_number,
+        "customer_email": customer_email,
+        "items": items,
+    }
 
 
 def save_invoice_and_notification(
     conn: psycopg.Connection[Any],
     invoice: Invoice,
     notification: Mapping[str, Any],
-) -> None:
-    """Persist an invoice and its customer notification in one transaction."""
-    raise NotImplementedError(
-        "save_invoice_and_notification is implemented by the invoice-generation ticket"
+) -> bool:
+    """Persist an invoice, its items and one outbox notification in one transaction.
+
+    Returns ``True`` when the invoice was newly written and ``False`` when an
+    invoice for the same order number already existed (the insert is guarded by
+    ``ON CONFLICT (order_number) DO NOTHING``). In the latter case no item and no
+    notification row is written, so reprocessing an order cannot double up.
+    """
+    with conn.cursor() as cur:
+        cur.execute(
+            INSERT_INVOICE_SQL,
+            (
+                invoice.order_number,
+                invoice.net_cents,
+                invoice.vat_cents,
+                invoice.gross_cents,
+                invoice.created_at,
+            ),
+        )
+        returned = cur.fetchone()
+        if returned is None:
+            conn.rollback()
+            return False
+        invoice_id = returned[0]
+
+        for item in invoice.items:
+            _insert_item(cur, invoice_id, item)
+
+        cur.execute(
+            INSERT_OUTBOX_SQL,
+            (
+                notification["order_number"],
+                notification.get("recipient"),
+                notification.get("subject", ""),
+                notification.get("body", ""),
+                notification.get("channel", "email"),
+            ),
+        )
+    conn.commit()
+    return True
+
+
+def _insert_item(cur: psycopg.Cursor[Any], invoice_id: int, item: InvoiceItem) -> None:
+    cur.execute(
+        INSERT_INVOICE_ITEM_SQL,
+        (
+            invoice_id,
+            item.kind,
+            item.description,
+            item.quantity,
+            item.unit_price_cents,
+            item.total_cents,
+        ),
     )
