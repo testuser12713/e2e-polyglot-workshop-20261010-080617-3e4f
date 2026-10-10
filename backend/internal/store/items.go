@@ -10,9 +10,6 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-// ErrOrderNotFound is returned when no order with the given number exists.
-var ErrOrderNotFound = errors.New("store: order not found")
-
 // ErrOrderNotChangeable is returned when the order's status no longer allows
 // capturing positions (it has been picked up or rejected).
 var ErrOrderNotChangeable = errors.New("store: order is not open for positions")
