@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-	"golang.org/x/crypto/bcrypt"
 )
 
 // BootstrapInitialEmployee creates the first employee from configuration when
@@ -32,7 +31,7 @@ func BootstrapInitialEmployee(ctx context.Context, pool *pgxpool.Pool, email, pa
 		return nil
 	}
 
-	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	hash, err := HashPassword(password)
 	if err != nil {
 		return err
 	}
@@ -44,7 +43,7 @@ func BootstrapInitialEmployee(ctx context.Context, pool *pgxpool.Pool, email, pa
 
 	_, err = pool.Exec(ctx,
 		`INSERT INTO employees (name, email, password_hash) VALUES ($1, $2, $3)`,
-		name, email, string(hash),
+		name, email, hash,
 	)
 	return err
 }

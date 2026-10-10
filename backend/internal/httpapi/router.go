@@ -19,6 +19,7 @@ type Server struct {
 // NewServer builds a Server. Config may be nil in tests that do not exercise
 // configuration-dependent behaviour.
 func NewServer(pool *pgxpool.Pool, cfg *config.Config) *Server {
+	SetSessionPool(pool)
 	return &Server{Pool: pool, Config: cfg}
 }
 
