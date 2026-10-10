@@ -2,9 +2,9 @@ import { Link, Route, Routes } from "react-router-dom";
 import { ProtectedRoute } from "./auth/AuthContext";
 import { AppShell } from "./layout/AppShell";
 import DatenschutzPage from "./pages/DatenschutzPage";
+import HomePage from "./pages/HomePage";
 import ImpressumPage from "./pages/ImpressumPage";
 import InvoicePage from "./pages/customer/InvoicePage";
-import RequestPage from "./pages/customer/RequestPage";
 import StatusPage from "./pages/customer/StatusPage";
 import DashboardPage from "./pages/workshop/DashboardPage";
 import LoginPage from "./pages/workshop/LoginPage";
@@ -32,7 +32,7 @@ export default function App() {
   return (
     <Routes>
       <Route element={<AppShell />}>
-        <Route path="/" element={<RequestPage />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/status" element={<StatusPage />} />
         <Route path="/rechnung" element={<InvoicePage />} />
         <Route path="/impressum" element={<ImpressumPage />} />
