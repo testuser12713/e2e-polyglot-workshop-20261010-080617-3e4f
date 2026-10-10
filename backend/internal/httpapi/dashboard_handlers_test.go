@@ -23,7 +23,7 @@ type dashboardFixture struct {
 	customerID   int64
 }
 
-func uniqueSuffix(t *testing.T) string {
+func dashboardSuffix(t *testing.T) string {
 	t.Helper()
 	replacer := strings.NewReplacer("/", "-", " ", "-", "_", "-")
 	return fmt.Sprintf("%s-%d", replacer.Replace(t.Name()), time.Now().UnixNano())
@@ -124,7 +124,7 @@ func TestGetDashboardMetricsCounts(t *testing.T) {
 		t.Fatalf("baseline metrics: %v", err)
 	}
 
-	seedDashboard(t, pool, uniqueSuffix(t))
+	seedDashboard(t, pool, dashboardSuffix(t))
 
 	after, err := store.GetDashboardMetrics(ctx, pool)
 	if err != nil {
@@ -152,7 +152,7 @@ func TestGetDashboardHandlerResponds(t *testing.T) {
 		t.Fatalf("baseline metrics: %v", err)
 	}
 
-	seedDashboard(t, pool, uniqueSuffix(t))
+	seedDashboard(t, pool, dashboardSuffix(t))
 
 	req := httptest.NewRequest(http.MethodGet, "/api/workshop/dashboard", nil)
 	rec := httptest.NewRecorder()
