@@ -39,7 +39,7 @@ describe("App shell", () => {
     ["/rechnung", "Rechnung"],
     ["/impressum", "Impressum"],
     ["/datenschutz", "Datenschutzerklärung"],
-    ["/werkstatt/login", "Werkstatt-Anmeldung"],
+    ["/werkstatt/login", "Anmeldung Werkstattbereich"],
   ])("resolves %s to its page", (path, heading) => {
     renderAt(path);
     expect(
@@ -52,7 +52,10 @@ describe("App shell", () => {
     (path) => {
       renderAt(path);
       expect(
-        screen.getByRole("heading", { level: 1, name: "Werkstatt-Anmeldung" }),
+        screen.getByRole("heading", {
+          level: 1,
+          name: "Anmeldung Werkstattbereich",
+        }),
       ).toBeInTheDocument();
     },
   );
