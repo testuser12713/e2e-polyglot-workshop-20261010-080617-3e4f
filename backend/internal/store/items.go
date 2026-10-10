@@ -69,13 +69,6 @@ type OrderItemsDetail struct {
 	StatusHistory      []OrderItemsHistory `json:"status_history"`
 }
 
-// querier is the subset of pgx shared by *pgxpool.Pool and pgx.Tx, so the same
-// read helpers run inside or outside a transaction.
-type querier interface {
-	Query(ctx context.Context, sql string, args ...any) (pgx.Rows, error)
-	QueryRow(ctx context.Context, sql string, args ...any) pgx.Row
-}
-
 // blockedStatuses lists the statuses that forbid capturing new positions.
 var blockedStatuses = map[string]bool{
 	"abgeholt":  true,
@@ -132,7 +125,7 @@ func AddOrderItems(ctx context.Context, pool *pgxpool.Pool, orderNumber string, 
 }
 
 // loadOrderItemsDetail reads the full OrderDetail for one order number.
-func loadOrderItemsDetail(ctx context.Context, q querier, orderNumber string) (*OrderItemsDetail, error) {
+func loadOrderItemsDetail(ctx context.Context, q pgx.Tx, orderNumber string) (*OrderItemsDetail, error) {
 	detail := &OrderItemsDetail{OrderNumber: orderNumber}
 	var preferredDate *time.Time
 	var orderID int64
@@ -176,7 +169,7 @@ func loadOrderItemsDetail(ctx context.Context, q querier, orderNumber string) (*
 	return detail, nil
 }
 
-func loadOrderItems(ctx context.Context, q querier, orderID int64) ([]OrderItemsLine, error) {
+func loadOrderItems(ctx context.Context, q pgx.Tx, orderID int64) ([]OrderItemsLine, error) {
 	rows, err := q.Query(ctx,
 		`SELECT kind, description, quantity, unit_price_cents, total_cents
 		 FROM order_items
@@ -203,7 +196,7 @@ func loadOrderItems(ctx context.Context, q querier, orderID int64) ([]OrderItems
 	return items, nil
 }
 
-func loadStatusHistory(ctx context.Context, q querier, orderID int64) ([]OrderItemsHistory, error) {
+func loadStatusHistory(ctx context.Context, q pgx.Tx, orderID int64) ([]OrderItemsHistory, error) {
 	rows, err := q.Query(ctx,
 		`SELECT status, changed_at
 		 FROM status_history
