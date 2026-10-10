@@ -1,0 +1,57 @@
+/*
+ * Start hub layout (route "/"). Tokens come from tokens.css / DESIGN.md; the
+ * two regions sit side by side from 640px and stack on narrower screens.
+ */
+
+.hub-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+@media (min-width: 640px) {
+  .hub-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.hub-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.hub-card h2 {
+  font-size: var(--size-h3);
+  margin-bottom: var(--space-1);
+}
+
+.hub-card p {
+  color: var(--color-fg-muted);
+  margin-bottom: var(--space-4);
+}
+
+.hub-card .btn {
+  align-self: flex-start;
+}
+
+.hub-links {
+  list-style: none;
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.hub-links a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: var(--font-label-weight);
+}
+
+@media (max-width: 639px) {
+  .hub-card .btn {
+    align-self: stretch;
+  }
+}

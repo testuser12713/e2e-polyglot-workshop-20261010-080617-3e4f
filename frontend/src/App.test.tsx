@@ -34,7 +34,8 @@ describe("App shell", () => {
   });
 
   it.each([
-    ["/", "Werkstattauftrag anfragen"],
+    ["/", "Willkommen im Werkstattportal"],
+    ["/anfrage", "Werkstattauftrag anfragen"],
     ["/status", "Auftragsstatus"],
     ["/rechnung", "Rechnung"],
     ["/impressum", "Impressum"],

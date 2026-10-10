@@ -325,7 +325,7 @@ export default function InvoicePage() {
             <Link className="btn btn--secondary" to="/status">
               Zurück zum Statusabruf
             </Link>
-            <Link className="btn btn--ghost" to="/">
+            <Link className="btn btn--ghost" to="/anfrage">
               Weiteren Auftrag anfragen
             </Link>
           </div>
