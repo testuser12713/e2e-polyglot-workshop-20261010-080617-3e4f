@@ -34,7 +34,7 @@ describe("App shell", () => {
   });
 
   it.each([
-    ["/", "Termin anfragen"],
+    ["/", "Werkstattauftrag anfragen"],
     ["/status", "Auftragsstatus"],
     ["/rechnung", "Rechnung"],
     ["/impressum", "Impressum"],
